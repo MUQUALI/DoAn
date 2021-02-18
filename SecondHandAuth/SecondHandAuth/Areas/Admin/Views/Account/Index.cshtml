@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Quản Lý Tài Khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Quản lý tài khoản</h1>
+<div class="row mb-2">
+    <div class="col-md-5 offset-md-3">
+        <div class="row">
+            <input type="text" class="form-control col-9" id="search_area" placeholder="Tìm kiếm" />
+            <button id="btn_search" class="btn btn-primary col-3 form-control">Tìm kiếm</button>
+        </div>
+    </div>
+    <div class="col-md-1 offset-md-3">
+        <button class="btn btn-primary form-control" onclick="showCreatePopup()">Thêm</button>
+    </div>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Dữ liệu nhân viên</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Quyền</th>
+                        <th>Mô tả</th>
+                        <th>Mã nhân viên</th>
+                        <th>Mã khách hàng</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="area_render">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        
+    </ul>
+</nav>
+
+<div class="modal fade" id="modal_account" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo tài khoản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="account_form">
+                    <div class="row">
+                        <div class="col-12 mb-3"">
+                            <input type="hidden" name="PK_AccountID" id="txt_id" />
+                            <label for="txt_username" class="form-label">Username *</label>
+                            <input type="text" name="Username"  id="txt_username" class="form-control" />                            
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="txt_password" class="form-label">Password *</label>
+                            <input type="text" name="Password" id="txt_password" class="form-control" />
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="txt_description" class="form-label">Mô tả</label>
+                            <input type="text" name="Description" id="txt_description" class="form-control" />
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="txt_rule" class="form-label">Quyền *</label>
+                            <select id="sl_rule" name="FK_RuleID" class="form-control">
+                                <option value="3">Nhân viên</option>
+                                <option value="2">Phó cửa hàng</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="txt_nhanvien" class="form-label">Mã nhân viên</label>
+                            <input type="text" name="FK_EmpID" id="txt_nhanvien" class="form-control" />
+                            <div id="note" class="form-text">Nhập mã nhân viên nếu bạn muốn cấp tài khoản này cho nhân viên</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn_save" class="btn btn-primary">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="~/Assets/MyScript/AccountEvent.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/testPagination.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/Pagination.js"></script>
+

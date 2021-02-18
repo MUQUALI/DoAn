@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondHandAuth", "SecondHandAuth\SecondHandAuth.csproj", "{50F66F62-6170-49CC-902C-CEF4A8F060D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{2B81AB25-3CAE-4646-8424-E7E53BD2B09C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50F66F62-6170-49CC-902C-CEF4A8F060D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50F66F62-6170-49CC-902C-CEF4A8F060D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50F66F62-6170-49CC-902C-CEF4A8F060D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50F66F62-6170-49CC-902C-CEF4A8F060D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B81AB25-3CAE-4646-8424-E7E53BD2B09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B81AB25-3CAE-4646-8424-E7E53BD2B09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B81AB25-3CAE-4646-8424-E7E53BD2B09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B81AB25-3CAE-4646-8424-E7E53BD2B09C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

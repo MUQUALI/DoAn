@@ -1,0 +1,210 @@
+﻿
+@{
+    Layout = null;
+}
+@model dynamic
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+    @Styles.Render("~/Admin/Layout/css")
+    @Scripts.Render("~/Admin/Product/js")
+    <style>
+        #lb_upload:hover {
+            cursor: pointer;
+        }
+        #lb_upload:hover {
+            cursor: pointer;
+        }
+        .sub_upload {
+            width: 150px;
+            height: 150px;
+            margin: 5px;
+            border: 1px dotted #808080;
+            cursor: pointer;
+        }
+        .active {
+            border: 1px solid #00ff90;
+        }
+        #image_main {
+            height: auto; 
+            width: auto; 
+            max-width: 500px; 
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-12 p-3 mb-2 bg-info text-white text-center">
+                Thêm mới sản phẩm
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    @if (ViewBag.Mes != null)
+                    {
+                        <div id="err_dup" class="alert alert-success" role="alert">
+                            @ViewBag.Mes
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2 border border-info justify-content-end">
+            <div class="col-2 p-3 mb-2">
+                <a href="~/Admin/Product" class="btn btn-dark w-100" role="button">Thoát</a>
+            </div>
+            <div class="col-2 p-3 mb-2 offset-6">
+                <button class="btn btn-success w-100" data-toggle="modal" data-target="#modal_type">Thêm kiểu dáng</button>
+            </div>
+            <div class="col-2 p-3 mb-2">
+                <button class="btn btn-success w-100" data-toggle="modal" data-target="#modal_firm">Thêm hãng</button>
+            </div>
+        </div>
+        <form id="frm_create" name="frmCreate" method="post" action="/Admin/Product/Create" enctype="multipart/form-data" class="row m-auto d-flex justify-content-center">
+            <div class="col-5 border border-info rounded text-center mr-2">
+                <div class="row">
+                    <div class="col-12">
+                        <label id="lb_upload" for="images_upload">
+                            <img id="image_main" src="~/Assets/img/upload_img.jpg" />
+
+                        </label>
+                        <br />
+                        <span class="text-center">chọn ảnh sản phẩm</span><br />
+                        <input id="images_upload" name="Images" type="file" class="invisible" multiple />
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div id="list_upload" class="col-12 d-flex justify-content-center">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-5 border border-info rounded pt-3 pb-3">
+                <label for="txt_code">Mã sản phẩm</label>
+                <input id="txt_code" type="text" name="Code" class="form-control" placeholder="Mã sản phẩm"/>
+                <div id="err_dup" class="alert alert-warning d-none" role="alert">
+
+                </div>
+
+                <label for="txt_name" class="mt-2">Tên sản phẩm</label>
+                <input id="txt_name" type="text" name="Name" class="form-control" placeholder="Tên sản phẩm" />
+
+                <label for="cmb_type" class="mt-2">Kiểu dáng</label>
+                <select id="cmb_type" name="FK_ProductTypeID" class="form-control">
+                    <option></option>
+                    @foreach (Model.ProductType type in Model.ListProductType)
+                    {
+                        <option value="@type.PK_TypeID">@type.TypeName</option>
+                    }
+                </select>
+
+                <label for="cmb_firm" class="mt-2">Hãng</label>
+                <select id="cmb_firm" name="FK_FirmID" class="form-control">
+                    <option></option>
+                    @foreach (Model.Firm type in Model.ListFirm)
+                    {
+                        <option value="@type.PK_FirmID">@type.FirmName</option>
+                    }
+                </select>
+
+                <label for="buy_price" class="mt-2">Giá nhập</label>
+                <input id="buy_price" type="text" name="BuyPrice" class="form-control" placeholder="Giá nhập" />
+
+                <label for="sale_price" class="mt-2">Giá bán</label>
+                <input id="sale_price" type="text" name="SalePrice" class="form-control" placeholder="Giá bán" />
+
+                <label for="status" class="mt-2">Tình trạng</label>
+                <input id="status" type="text" name="Status" class="form-control" placeholder="Tình trạng" />
+
+                <label for="description" class="mt-2">Mô tả thêm</label>
+                <input id="description" type="text" name="Description" class="form-control" placeholder="Mô tả thêm" />
+            </div>
+        </form>
+        <div class="row mt-2 mb-2">
+            <div class="col-12 p-3 text-center">
+                <button type="button" id="btn_save" class="btn btn-success">Lưu</button>
+                <button type="reset" id="btn_reset" form="frm_create" class="btn btn-dark">Hủy</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal kiểu dáng -->
+    <div class="modal fade" id="modal_type" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm kiểu dáng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="type_form" method="post" action="/Admin/Product/CreateProductType">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="txt_typename" class="form-label">Tên kiểu *</label>
+                                <input type="text" name="TypeName" id="txt_typename" class="form-control" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="txt_description" class="form-label">Mô tả thêm</label>
+                                <input type="text" name="Description" id="txt_description" class="form-control" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn_save_type" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal hãng -->
+    <div class="modal fade" id="modal_firm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm hãng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="firm_form" method="post" action="/Admin/Product/CreateFirm">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="txt_firm" class="form-label">Tên hãng *</label>
+                                <input type="text" name="FirmName" id="txt_firm" class="form-control" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="txt_origin" class="form-label">xuất xứ</label>
+                                <input type="text" name="Origin" id="txt_origin" class="form-control" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="txt_description" class="form-label">Mô tả thêm</label>
+                                <input type="text" name="Description" id="txt_description" class="form-control" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn_save_firm" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+    <script type="text/javascript" src="~/Assets/MyScript/ProductEvent.js"></script>
+
+
+</body>
+</html>
