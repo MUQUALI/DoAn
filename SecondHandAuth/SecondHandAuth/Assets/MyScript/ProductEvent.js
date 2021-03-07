@@ -195,3 +195,17 @@ $("#btn_save_edit").click(function () {
 
     $("#frm_create").submit();
 });
+
+// delete product
+$(".ic_del").click(function () {
+    var ask = confirm("Bạn có chắc muốn xóa sản phẩm này ?");
+
+    if (ask) {
+        var id = $(this).children().attr("data-id");
+        window.location.href = window.location.origin + "/Admin/Product/Delete/" + id;
+    }
+    else {
+        return;
+    }
+    
+})

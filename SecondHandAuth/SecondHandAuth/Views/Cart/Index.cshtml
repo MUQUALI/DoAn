@@ -1,0 +1,93 @@
+﻿@using SecondHandAuth.Commons
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Ulayout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Assets/MyCss/buy.css" />
+<div class="row justify-content-center">
+    <div class="row w-75">
+        <div class="col-5">
+            <label for="txt_name">Họ tên người nhận</label>
+            <input id="txt_name" type="text" class="form-control" />
+        </div>
+
+        <div class="col-5">
+            <label for="txt_phone">Số điện thoại người nhận</label>
+            <input id="txt_phone" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="row w-75">
+        <div class="col-12">
+            <label for="txt_address">Địa chỉ nhận hàng</label>
+            <textarea class="form-control" id="txt_address" name="Address" rows="5"></textarea>
+        </div>
+        
+    </div>
+    <script>
+        $("#txt_address").val(window.sessionStorage.getItem("address"));
+    </script>
+    <div class="row w-75">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">Sản phẩm</th>
+                            <th scope="col">Size - Màu</th>
+                            <th scope="col" class="text-center">Số lượng</th>
+                            <th scope="col" class="text-right">Giá bán</th>
+                            <th scope="col" class="text-right">Thành Tiền</th>
+                            <th>Tùy chọn</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-body">
+                        
+                        
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Tổng tiền hàng</td>
+                            <td id="sub-total" class="text-right">255,90 €</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Phí vận chuyển</td>
+                            <td class="text-right">25.000 VNĐ</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Tổng thanh toán</strong></td>
+                            <td class="text-right"><strong id="total"></strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <button class="btn btn-block btn-light">Continue Shopping</button>
+                </div>
+                <div class="col-sm-12 col-md-6 text-right">
+                    <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/CartIndex.js"></script>
+
+

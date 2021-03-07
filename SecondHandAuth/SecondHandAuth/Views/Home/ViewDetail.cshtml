@@ -1,0 +1,103 @@
+﻿@using System.Collections.Generic
+@using SecondHandAuth.Commons
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_Ulayout.cshtml";
+    List<Model.CustomModel.Inventory> Customs = (List<Model.CustomModel.Inventory>)ViewData["Customs"];
+    Model.Product Detail = (Model.Product)ViewData["Detail"];
+
+    string[] images = Detail.Images.Split(';');
+}
+<link rel="stylesheet" type="text/css" href="~/Assets/MyCss/buy.css" />
+
+<div class="content">
+    <div class="row-content">
+        <div class="left">
+            <div class="main-img">
+                <img id="img-main" src="~/ImagesUpload/@images[0]" />
+            </div>
+            <div class="detail-img">
+                @for (int i = 0; i < images.Length; i++)
+                {
+                    <img onclick="chainImg(this)" src="~/ImagesUpload/@images[i]">
+                }
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-content">
+                <form>
+                    <input type="hidden" value="@Detail.PK_ProductID" id="product-id" name="imgUrl" />
+                    <input id="product-name" class="form-control" type="text" value="@Detail.Name" name="product_name" readonly />
+                    <div id="vote">
+                        <span color="#ee4d2d">
+                            5.0 &nbsp
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </span>
+                        &nbsp | &nbsp
+                        75 đánh giá
+                        &nbsp | &nbsp
+                        210 đã bán
+                    </div>
+                    <input type="text" class="form-control" value="@Converter.PriceToVND(Detail.SalePrice)" name="price" readonly />
+                    <div id="transport">
+                        <span>Vận Chuyển: &nbsp <i class="fas fa-shuttle-van"></i> &nbsp 30.000 vnđ - Hà nội</span>
+                        <br>
+                        <label for="txt_address">Địa chỉ giao hàng</label>
+                        <textarea class="form-control" id="txt_address" name="Address" rows="5"></textarea>
+                    </div>
+                    <div class="product-custom row">
+                        <div class="col-12">
+                            <label for="sl-custom">Size - Màu</label>
+                            <select id="sl-custom" name="custom" class="form-control">
+                                @foreach(Model.CustomModel.Inventory item in Customs)
+                                {
+                                    <option value="@item.FK_CustomID">@item.Size - @item.Color</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="qty-area">
+                        <span>Số Lượng: &nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                        <button type="button" onclick="subQty();">-</button>
+                        <input id="txtQty" type="text" name="txtQty" value="1">
+                        <button type="button" onclick="addQty();">+</button>
+                    </div>
+                    <button type="button" id="add-to-cart">Thêm Vào Giỏ Hàng</button>
+                    <a class="btn btn-danger" id="btn-buy">Mua ngay</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+		function chainImg(img) {
+			let mainSrc = img.getAttribute("src");
+			let imgMain = document.getElementById('img-main');
+			imgMain.setAttribute("src", mainSrc);
+		}
+
+		function addQty() {
+			let qty = document.getElementById('txtQty');
+			qty.value = parseInt(qty.value) + 1;
+		}
+
+		function subQty() {
+			let qty = document.getElementById('txtQty');
+			qty.value = parseInt(qty.value) - 1;
+		}
+
+		$("#btn-buy").click(function () {
+		    window.sessionStorage.setItem("address", $("#txt_address").val());
+		    window.location.href = window.location.origin + "/Cart/Index";
+		})
+</script>
+
+<script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/AddToCart.js"></script>
+

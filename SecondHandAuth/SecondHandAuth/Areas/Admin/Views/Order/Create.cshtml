@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-12 p-3 mb-2 bg-info text-white text-center">
+            Tạo mới đơn đặt hàng
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @if (ViewBag.Mes != null)
+                {
+                    <div id="err_dup" class="alert alert-success" role="alert">
+                        @ViewBag.Mes
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2 border border-info justify-content-end">
+        <div class="col-2 p-3 mb-2">
+            <a href="~/Admin/Order" class="btn btn-dark w-100" role="button">Thoát</a>
+        </div>
+    </div>
+    <form id="frm_order" method="post" action="/Admin/Order/Create" class="row d-flex justify-content-center border border-info rounded mb-2 p-2">
+        <div class="col-3">
+            <label id="lb_sup" for="txt_sup">Tên nhà cung cấp *</label>
+            <input id="txt_sup" class="form-control" placeholder="Nhà cung cấp" name="Supplier" type="text" />
+
+            <label for="txt_sup">Số điện thoại *</label>
+            <input id="txt_phone" class="form-control" name="Phone" placeholder="Số điện thoại" type="text" />
+
+            <input type="hidden" name="ListDetail" />
+            <input type="hidden" name="TotalMoney" />
+        </div>
+
+        <div class="col-8">
+            <label for="txt_note">Ghi chú</label>
+            <textarea class="form-control" id="txt_note" name="Note" rows="3"></textarea>
+        </div>
+    </form>
+    <form id="frm_detail" name="frmCreate" class="row m-auto d-flex justify-content-center">
+        <div class="col-3 border border-info rounded mr-2 pt-3 pb-3">
+            <div class="row">
+                <div class="col-12">
+                    <label id="lb_upload" for="product_code">Mã sản phẩm *</label>
+                    <input id="product_code" class="form-control" placeholder="Mã sản phẩm" name="ProductID" type="text" />
+
+                    <label for="txt_name" class="mt-2">Tên sản phẩm</label>
+                    <input id="txt_name" type="text" name="Name" readonly disabled class="form-control" placeholder="Tên sản phẩm" />
+
+                    <label for="txt_qty" class="mt-2">Số lượng *</label>
+                    <input id="txt_qty" type="text" name="Quantity"class="form-control" placeholder="Số lượng" />
+
+                    <label for="txt_size" class="mt-2">Size *</label>
+                    <input id="txt_size" type="text" name="Size" class="form-control" placeholder="Size" />
+
+                    <label for="txt_color" class="mt-2">Màu *</label>
+                    <input id="txt_color" type="text" name="Color" class="form-control" placeholder="Màu" />
+
+                    <button id="btn_add_product" disabled class="btn btn-primary" type="button">Thêm</button>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="col-8 border border-info rounded pt-3 pb-3">
+            <span>Chi tiết đặt hàng</span>
+            <table class="table table-bordered">
+                
+                <thead>
+                    <tr>
+                        <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Size</th>
+                        <th>Màu</th>
+                        <th>Giá nhập</th>
+                        <th>Số lượng</th>
+                        <th>Thành Tiền</th>
+                    </tr>
+                </thead>
+                <tbody id="body_detail">
+
+                </tbody>
+
+                <tfoot id="total_detail">
+                    
+                </tfoot>
+            </table>
+        </div>
+    </form>
+    <div class="row mt-2 mb-2">
+        <div class="col-12 p-3 text-center">
+            <button type="button" id="btn_save" class="btn btn-success">Lưu</button>
+            <button type="reset" id="btn_reset" form="frm_create" class="btn btn-dark">Hủy</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/OrderEvent.js"></script>
+
+
+

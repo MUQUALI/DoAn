@@ -1,0 +1,121 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<Model.CustomModel.OutViewOrder>  
+@{
+    ViewBag.Title = "Quản lý đặt hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Quản lý đặt hàng</h1>
+<div class="card shadow mb-4 p-3">
+    <form class="form-group row" action="/Admin/Order/Index" method="get" >
+        <label for="from_date" class="col-1 col-form-label">Từ ngày</label>
+        <div class="col-2">
+            <input class="form-control" name="FromDate" type="date" id="from_date">
+        </div>
+
+        <label for="from_date" class="col-1 col-form-label">Đến ngày</label>
+        <div class="col-2">
+            <input class="form-control" name="ToDate" type="date" id="to_date">
+        </div>
+
+        <div class="col-md-5 offset-1">
+            <div class="row">
+                <input type="text" name="OrderID" class="form-control col-9 mr-1" id="search_area" placeholder="Mã đơn đặt hàng" />
+                <button type="submit" id="btn_search" class="btn btn-primary col-2 form-control">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    
+    <div class="row">
+        <div class="col-md-2 offset-10 text-right">
+            <a class="btn btn-primary" href="~/Admin/Order/Create" role="button">Tạo đơn đặt hàng</a>
+        </div>
+    </div>
+    
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Dữ liệu đơn đặt hàng</h6>
+        @if (ViewBag.Mes != null)
+            {
+            <div id="err_dup" class="alert alert-success" role="alert">
+                @ViewBag.Mes
+            </div>
+            }
+    </div>
+    <div class="card-body row">
+        <div class="table-responsive col-5">
+            <table class="table table-bordered text-dark table-sm table-responsive-sm" id="dataTable" width="100" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã đơn đặt hàng</th>
+                        <th>Người lập</th>
+                        <th>Người bán</th>
+                        <th>Ngày lập</th>
+                        <th>Tổng tiền</th>
+                        <th>Ghi chú</th>
+                        <th>Tùy chọn</th>
+                    </tr>
+                </thead>
+                <tbody id="area_render">
+                    @foreach(Model.CustomModel.OutViewOrder item in Model)
+                    {
+                        <tr>
+                            <td>@item.OrderID</td>
+                            <td>
+                                @(item.CreatedUser == "" ? item.Username : item.Username + "-" + item.CreatedUser)
+                            </td>
+                            <td>@item.Supplier</td>
+                            <td>@item.strCreatedDate</td>
+                            <td>@item.TotalMoney</td>
+                            <td>@item.Note</td>
+                            <td>
+                                <a class="ic_detail" title="Chi tiết" href="javascript:void(0)"><i class="fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-7">
+            <span>Chi tiết hóa đơn</span>
+            <table class="table table-bordered">
+
+                <thead>
+                    <tr id="head_detail" class="invisible">
+                        <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Size</th>
+                        <th>Màu</th>
+                        <th>Giá nhập</th>
+                        <th>Số lượng</th>
+                        <th>Thành Tiền</th>
+                    </tr>
+                </thead>
+                <tbody id="body_detail"></tbody>
+
+                <tfoot id="total_detail">
+
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/OrderEvent.js"></script>
+
+<div class="row">
+    <div class="col-3">
+        <div class="pagination justify-content-start">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, ViewBag.OrderID, ViewBag.FromDate , ViewBag.ToDate }),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item", "page-link" }
+            })
+        </div>
+    </div>
+</div>
+
+

@@ -31,10 +31,23 @@ namespace SecondHandAuth.Areas.Admin.Controllers
                 if(dao.Login(username, password) > 0)
                 {
                     Account UserLogin = dao.GetUserInfo(username, password);
-                    UserSession UserInfo = new UserSession(UserLogin.Username, UserLogin.FK_RuleID);
+                    UserSession UserInfo = new UserSession(UserLogin.Username, UserLogin.FK_RuleID, UserLogin.PK_AccountID);
 
                     Session[Constants.USER_SESION] = UserInfo;
-                    return RedirectToAction("Index", "Home");
+                    HttpCookie UserCookie = new HttpCookie("UserID", UserInfo.PK_AccountID.ToString());
+                    UserCookie.Expires.AddDays(30);
+                    Response.Cookies.Add(UserCookie);
+
+                    if (UserInfo.Permission != Constants.CUSTOMER)
+                    {
+                        return RedirectToAction("Index", "Home", new { Area = "Admin", UserID = UserInfo.PK_AccountID.ToString() });
+                    }
+                    else
+                    {
+                        TempData["UserID"] = UserInfo.PK_AccountID;
+                        return RedirectToAction("Index", "Home", new { Area = ""});
+                    }
+                    
                 }
                 else
                 {

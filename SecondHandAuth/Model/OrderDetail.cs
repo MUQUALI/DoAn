@@ -29,6 +29,9 @@ namespace Model
 
         public decimal Money { get; set; }
 
+        [Key]
+        [Column(Order = 2)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int FK_CustomID { get; set; }
 
         public virtual Custom Custom { get; set; }

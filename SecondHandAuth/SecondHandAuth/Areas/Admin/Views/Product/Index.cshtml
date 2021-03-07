@@ -8,12 +8,12 @@
 <h1 class="h3 mb-2 text-gray-800">Quản lý sản phẩm</h1>
 <div class="row mb-2">
     <div class="col-md-5 offset-md-3">
-        <div class="row">
-            <input type="text" class="form-control col-9" id="search_area" placeholder="Tìm kiếm" />
-            <button id="btn_search" class="btn btn-primary col-3 form-control">Tìm kiếm</button>
-        </div>
+        <form class="row" action="/Admin/Product/Index" method="get">
+            <input type="text" name="code" value="@ViewBag.Code" class="form-control col-9" id="search_area" placeholder="Mã sản phẩm" />
+            <button type="submit" id="btn_search" class="btn btn-primary col-3 form-control">Tìm kiếm</button>
+        </form>
     </div>
-    <div class="col-md-1 offset-md-3">
+    <div class="col-md-2 offset-md-2 text-right">
         <a class="btn btn-primary" href="~/Admin/Product/Create" role="button">Thêm mới</a>
     </div>
 </div>
@@ -22,10 +22,10 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Dữ liệu sản phẩm</h6>
-            @if (ViewBag.MesOk != null)
+            @if (ViewBag.Mes != null)
             {
                 <div id="err_dup" class="alert alert-success" role="alert">
-                    @ViewBag.MesOk
+                    @ViewBag.Mes
                 </div>
             }
     </div>
@@ -60,8 +60,11 @@
                             <td>@Item.Status</td>
                             <td>@Item.Description</td>
                             <td>
-                                <a href="/Admin/Product/Detail/@Item.PK_ProductID">
+                                <a class="mr-2" href="/Admin/Product/Detail/@Item.PK_ProductID">
                                     <i class="fa fa-eye" title="chi tiết sản phẩm"></i>
+                                </a>
+                                <a class="ic_del" href="javascript:void(0)">
+                                    <i id="ic_del_fa" class="fa fa-trash" data-id="@Item.PK_ProductID" title="xóa"></i>
                                 </a>
                             </td>
                         </tr>
@@ -71,11 +74,12 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="~/Assets/MyScript/ProductEvent.js"></script>
 
 <div class="row">
     <div class="col-3 offset-9">
         <div class="pagination justify-content-end">
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page , ViewBag.Code }),
             new PagedListRenderOptions
             {
                 LiElementClasses = new string[] { "page-item", "page-link" }

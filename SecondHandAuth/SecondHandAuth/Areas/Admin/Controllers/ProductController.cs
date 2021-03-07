@@ -3,6 +3,7 @@ using Model.CustomModel;
 using Model.Dao;
 using PagedList;
 using SecondHandAuth.Areas.Admin.Models;
+using SecondHandAuth.Commons;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -13,20 +14,24 @@ using System.Web.Mvc;
 
 namespace SecondHandAuth.Areas.Admin.Controllers
 {
+    [SessionFilter]
     public class ProductController : Controller
     {
         ProductDao Dao = new ProductDao();
         // GET: Admin/Product
         [HttpGet]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string code = "")
         {
-            if(TempData["MesOk"] != null)
+            if(TempData["Mes"] != null)
             {
-                ViewBag.MesOk = TempData["MesOk"].ToString();
+                ViewBag.Mes = TempData["Mes"].ToString();
             }
             int PageStart = Commons.Constants.PAGE_INDEX;
             PageStart = page.HasValue ? int.Parse(page.ToString()) : 1;
-            IPagedList<Product> Data = Dao.ViewProducts().ToPagedList(PageStart, Commons.Constants.PRODUCT_PAGE_SIZE);
+
+            ViewBag.Code = code;
+            IPagedList<Product> Data = Dao.ViewProducts(code).ToPagedList(PageStart, Commons.Constants.PRODUCT_PAGE_SIZE);
+            
             return View(Data);
         }
 
@@ -73,7 +78,7 @@ namespace SecondHandAuth.Areas.Admin.Controllers
             
             if(Dao.Create(Model).Equals("200"))
             {
-                TempData["MesOk"] = "Thêm mới thành công";
+                TempData["Mes"] = "Thêm mới thành công";
                 return RedirectToAction("Index");
             }
             else
@@ -130,6 +135,21 @@ namespace SecondHandAuth.Areas.Admin.Controllers
             {
                 TempData["Mes"] = "Ohh, có thứ gì đó lỗi !";
                 return RedirectToAction("Detail/" + Model.PK_ProductID);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Delete(string id)
+        {
+            if(Dao.Delete(id).Equals("200"))
+            {
+                TempData["Mes"] = "Xóa thành công";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Mes"] = "Ohh, có thứ gì đó lỗi !";
+                return RedirectToAction("Index");
             }
         }
 

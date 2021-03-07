@@ -65,6 +65,13 @@ namespace SecondHandAuth
                       "~/Assets/vendor/bootstrap/js/bootstrap.bundle.min.js",
                       "~/Assets/vendor/jquery-easing/jquery.easing.min.js"
                       ));
+
+            // Home css
+            bundles.Add(new StyleBundle("~/Home/css").Include(
+                      "~/Assets/vendor/fontawesome-free/css/all.min.css",
+                      "~/Assets/css/sb-admin-2.min.css",
+                      "~/Content/fontawesome.min.css"
+                      ));
         }
 
     }

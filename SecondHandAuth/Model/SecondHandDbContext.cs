@@ -28,6 +28,8 @@ namespace Model
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
         public virtual DbSet<Rule> Rules { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<CartDetail> CartDetails { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -92,6 +94,27 @@ namespace Model
                 .HasPrecision(18, 0);
 
             modelBuilder.Entity<BillDetail>()
+                .Property(e => e.Money)
+                .HasPrecision(18, 0);
+
+            modelBuilder.Entity<Cart>()
+               .Property(e => e.TotalMoney)
+               .HasPrecision(18, 0);
+
+            modelBuilder.Entity<Cart>()
+                .HasMany(e => e.CartDetails)
+                .WithRequired(e => e.Cart)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CartDetail>()
+                .Property(e => e.ProductID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CartDetail>()
+                .Property(e => e.UnitPrice)
+                .HasPrecision(18, 0);
+
+            modelBuilder.Entity<CartDetail>()
                 .Property(e => e.Money)
                 .HasPrecision(18, 0);
 

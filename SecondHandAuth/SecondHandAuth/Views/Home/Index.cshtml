@@ -1,16 +1,265 @@
-﻿
+﻿@using SecondHandAuth.Commons
+@using System.Collections.Generic
 @{
-    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Ulayout.cshtml";
+    List<Model.Product> ListProduct = (List<Model.Product>)ViewData["ListProduct"];
+
+    List<Model.Product> ListNews = ListProduct.Take(50).ToList();
+    List<Model.Product> Nikes = ListProduct.Where(x => x.Firm.FirmName.Equals("NIKE")).Take(50).ToList();
+    List<Model.Product> Adidas = ListProduct.Where(x => x.Firm.FirmName.Equals("ADIDAS")).Take(50).ToList();
+    List<Model.Product> Converse = ListProduct.Where(x => x.Firm.FirmName.Equals("CONVERSE")).Take(50).ToList();
+    List<Model.Product> Vans = ListProduct.Where(x => x.Firm.FirmName.Equals("VANS")).Take(50).ToList();
+    string Uid = (string)ViewBag.UserID;
+
 }
+<link rel="stylesheet" type="text/css" href="~/Assets/MyCss/home.css" />
+<input type="hidden" id="hidden_uid" value="@Uid"/>
+<div class="content">
+    <div class="line line-news">
+        <div class="title">
+            <hr>
+            <p><b>Hàng Mới Về</b></p>
+            <hr>
+        </div>
 
+        <div class="line-frame text-right">
+            <div class="line-items">
+                @for (int i = 0; i < ListNews.Count; i++)
+                {
+                    string[] Images = ListNews[i].Images.Split(';');
+                    if (i == 0)
+                    {
+                        <div class="item first">
+                            <a href="/Home/ViewDetail/@ListNews[i].PK_ProductID">
+                                <img src="/ImagesUpload/@Images[0]">
+                                <p>@ListNews[i].Name</p>
+                                <p class="price">@Converter.PriceToVND(@ListNews[i].SalePrice)</p>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="item">
+                            <a href="/Home/ViewDetail/@ListNews[i].PK_ProductID">
+                                <img src="/ImagesUpload/@Images[0]">
+                                <p>@ListNews[i].Name</p>
+                                <p class="price">@Converter.PriceToVND(@ListNews[i].SalePrice)</p>
+                            </a>
+                        </div>
+                    }
+                }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+            </div>
+            <button id="btn_next" data-next="1" onclick="nextItem(this)" class="btn btn-primary">Next</button>
+        </div>
+    </div>
+    @if (Adidas.Count > 0)
+    {
+        <div class="line line-adidas">
+            <div class="title">
+                <hr>
+                <p><b>Giày ADIDAS</b></p>
+                <hr>
+            </div>
+            <div class="line-frame text-right">
+                <div class="line-items">
+                    @for (int i = 0; i < Adidas.Count; i++)
+                    {
+                        string[] Images = Adidas[i].Images.Split(';');
+                        if (i == 0)
+                        {
+                            <div class="item first">
+                                <a href="/Home/ViewDetail/@Adidas[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Adidas[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Adidas[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <a href="/Home/ViewDetail/@Adidas[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Adidas[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Adidas[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+                <button id="btn_next" data-next="1" onclick="nextItem(this)" class="btn btn-primary">Next</button>
+            </div>
+
+        </div>
+    }
+
+    @if (Nikes.Count > 0)
+    {
+        <div class="line line-adidas">
+            <div class="title">
+                <hr>
+                <p><b>Giày NIKE</b></p>
+                <hr>
+            </div>
+            <div class="line-frame text-right">
+                <div class="line-items">
+                    @for (int i = 0; i < Nikes.Count; i++)
+                    {
+                        string[] Images = Nikes[i].Images.Split(';');
+                        if (i == 0)
+                        {
+                            <div class="item first">
+                                <a href="/Home/ViewDetail/@Nikes[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Nikes[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Nikes[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <a href="/Home/ViewDetail/@Nikes[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Nikes[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Nikes[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+                <button id="btn_next" data-next="1" onclick="nextItem(this)" class="btn btn-primary">Next</button>
+            </div>
+
+        </div>
+    }
+
+    @if (Vans.Count > 0)
+    {
+        <div class="line line-adidas">
+            <div class="title">
+                <hr>
+                <p><b>Giày VANS</b></p>
+                <hr>
+            </div>
+            <div class="line-frame text-right">
+                <div class="line-items">
+                    @for (int i = 0; i < Vans.Count; i++)
+                    {
+                        string[] Images = Vans[i].Images.Split(';');
+                        if (i == 0)
+                        {
+                            <div class="item first">
+                                <a href="/Home/ViewDetail/@Vans[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Vans[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Vans[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <a href="/Home/ViewDetail/@Vans[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Vans[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Vans[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+                <button id="btn_next" data-next="1" onclick="nextItem(this)" class="btn btn-primary">Next</button>
+            </div>
+
+        </div>
+    }
+
+    @if (Converse.Count > 0)
+    {
+        <div class="line line-adidas">
+            <div class="title">
+                <hr>
+                <p><b>Giày CONVERSE</b></p>
+                <hr>
+            </div>
+            <div class="line-frame text-right">
+                <div class="line-items">
+                    @for (int i = 0; i < Converse.Count; i++)
+                    {
+                        string[] Images = Converse[i].Images.Split(';');
+                        if (i == 0)
+                        {
+                            <div class="item first">
+                                <a href="/Home/ViewDetail/@Converse[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Converse[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Converse[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <a href="/Home/ViewDetail/@Converse[i].PK_ProductID">
+                                    <img src="/ImagesUpload/@Images[0]">
+                                    <p>@Converse[i].Name</p>
+                                    <p class="price">@Converter.PriceToVND(@Converse[i].SalePrice)</p>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+                <button id="btn_next" data-next="1" onclick="nextItem(this)" class="btn btn-primary">Next</button>
+            </div>
+
+        </div>
+    }
+
+    <button id="btnMore">Xem Thêm >>></button>
+
+    <div class="line">
+        <div class="title">
+            <hr>
+            <p><b>Tin Thời Trang</b></p>
+            <hr>
+        </div>
+
+        <div class="line-frame">
+            <div class="line-items">
+                <div class="item">
+                    <a href="#">
+                        <img src="./images/news.jpg">
+                        <p>Hướng Dẫn Làm Trắng Đế Giày</p>
+                    </a>
+                </div>
+
+                <div class="item">
+                    <a href="#">
+                        <img src="./images/news.jpg">
+                        <p>Vệ Sinh Giày Đúng Cách</p>
+                    </a>
+                </div>
+
+                <div class="item">
+                    <a href="#">
+                        <img src="./images/news.jpg">
+                        <p>Xứ lý Mùi Hôi</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <span>username: </span> <br />
-    <span>description: </span> <br />
-</div>
+<script type="text/javascript" src="~/Assets/MyScript/Home.js"></script>
+<script>
+    if ($("#hidden_uid").val() != "") {
+        window.localStorage.setItem("UserID", $("#hidden_uid").val());
+    }
+</script>
+
+
+
+

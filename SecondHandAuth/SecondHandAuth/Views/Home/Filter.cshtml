@@ -1,0 +1,148 @@
+﻿@using PagedList;
+@using System.Collections.Generic;
+@using SecondHandAuth.Commons
+@using PagedList.Mvc
+@{
+    Layout = "~/Views/Shared/_Ulayout.cshtml";
+    IPagedList<Model.Product> Data = (IPagedList<Model.Product>)ViewData["Data"];
+
+    List<Model.Product> Row1 = Data.Skip(0).Take(4).ToList();
+    List<Model.Product> Row2 = Data.Skip(4).Take(4).ToList();
+    List<Model.Product> Row3 = Data.Skip(8).Take(4).ToList();
+    List<Model.Product> Row4 = Data.Skip(12).Take(4).ToList();
+
+    List<string> ListType = (List<string>)ViewData["ListType"];
+}
+<link rel="stylesheet" type="text/css" href="~/Assets/MyCss/home.css" />
+<div class="row">
+    <div class="col-2">
+        <ul class="nav flex-column">
+            @foreach (string item in ListType)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="#">@item</a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="col-9">
+        <div class="row shadow-sm p-3 mb-5 bg-white rounded justify-content-center">
+            @foreach (Model.Product item in Row1)
+            {
+                string[] images = item.Images.Split(';');
+
+                <div class="col-3 text-center" style="width: 18rem;">
+                    <a href="/Home/ViewDetail/@item.PK_ProductID">
+                        <img class="card-img-top" src="~/ImagesUpload/@images[0]">
+                        <p>@item.Name</p>
+                        <p class="price">@Converter.PriceToVND(item.SalePrice)</p>
+                    </a>
+                </div>
+            }
+        </div>
+    @if (Row2.Count > 0)
+    {
+        <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+
+            @foreach (Model.Product item in Row2)
+            {
+                string[] images = item.Images.Split(';');
+
+                <div class="col-3 text-center" style="width: 18rem;">
+                    <a href="/Home/ViewDetail/@item.PK_ProductID">
+                        <img class="card-img-top" src="~/ImagesUpload/@images[0]">
+                        <p>@item.Name</p>
+                        <p class="price">@Converter.PriceToVND(item.SalePrice)</p>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+    @if (Row3.Count > 0)
+    {
+        <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+
+            @foreach (Model.Product item in Row3)
+            {
+                string[] images = item.Images.Split(';');
+
+                <div class="col-3 text-center" style="width: 18rem;">
+                    <a href="/Home/ViewDetail/@item.PK_ProductID">
+                        <img class="card-img-top" src="~/ImagesUpload/@images[0]">
+                        <p>@item.Name</p>
+                        <p class="price">@Converter.PriceToVND(item.SalePrice)</p>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+    @if (Row4.Count > 0)
+    {
+        <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+
+            @foreach (Model.Product item in Row4)
+            {
+                string[] images = item.Images.Split(';');
+
+                <div class="col-3 text-center" style="width: 18rem;">
+                    <a href="/Home/ViewDetail/@item.PK_ProductID">
+                        <img class="card-img-top" src="~/ImagesUpload/@images[0]">
+                        <p>@item.Name</p>
+                        <p class="price">@Converter.PriceToVND(item.SalePrice)</p>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+    
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-9 offset-2">
+        <input id="hidden_menu" type="hidden" readonly value="@ViewBag.Menu" />
+        <input id="totalRecord" type="hidden" readonly value="@Data.Count" />
+        <div class="pagination justify-content-end">
+            
+        </div>
+    </div>
+</div>
+<!-- js pagination -->
+<script>
+    function renderPagination() {
+        var pagination = $(".pagination");
+        var totalRecord = $("#totalRecord").val();
+        var menuCache = $("#hidden_menu").val();
+
+        var totalPage = Math.ceil(totalRecord / 16);
+
+        var displayPage = totalPage > 5 ? 5 : totalPage;
+
+        for (i = 0; i < displayPage; i++) {
+            var page = i + 1;
+            var li = $.parseHTML("<li class='page-item'><a href='/Home/Filter?menu="
+                + menuCache + "&page=" + page + "' class='page-link'>" + page + "</a></li>");
+
+            if (i == 0) {
+                li = $.parseHTML("<li class='page-item active'><a href='/Home/Filter?menu="
+                + menuCache + "&page=" + page + "' class='page-link'>" + page + "</a></li>");
+            }
+            pagination.append(li);
+        }
+        pageClick()
+    }
+    function pageClick() {
+        //$('.page-item').first().remove();
+        $('.page-link').click(function () {
+            //console.log($(this));
+            $('.active').removeClass('active');
+            $(this).parent().addClass('active');
+
+            });
+        }
+    renderPagination();
+</script>
+
+

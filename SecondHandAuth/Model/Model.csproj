@@ -125,13 +125,23 @@
     <Compile Include="Bill.cs" />
     <Compile Include="BillDetail.cs" />
     <Compile Include="Bus\AccountBus.cs" />
+    <Compile Include="Bus\CartBus.cs" />
+    <Compile Include="Bus\OrderBus.cs" />
     <Compile Include="Bus\ProductBus.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="Custom.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomModel\Inventory.cs" />
+    <Compile Include="CustomModel\InViewCart.cs" />
+    <Compile Include="CustomModel\OutProduct.cs" />
+    <Compile Include="CustomModel\OutViewOrder.cs" />
+    <Compile Include="CustomModel\OutViewOrderDetail.cs" />
+    <Compile Include="CustomModel\ViewOrder.cs" />
+    <Compile Include="CustomModel\ViewOrderDetail.cs" />
     <Compile Include="Dao\AccountDao.cs" />
+    <Compile Include="Dao\CartDao.cs" />
     <Compile Include="Dao\DataProvider.cs" />
+    <Compile Include="Dao\OrderDao.cs" />
     <Compile Include="Dao\ProductDao.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Firm.cs" />
@@ -145,6 +155,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="SecondHandDbContext.cs" />
+    <Compile Include="Cart.cs" />
+    <Compile Include="CartDetail.cs" />
+    <Compile Include="Update\Model1.cs" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

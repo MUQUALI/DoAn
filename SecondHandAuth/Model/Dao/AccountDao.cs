@@ -32,6 +32,11 @@ namespace Model.Dao
             return Bus.GetUserInfo(username, password);
         }
 
+        public Account GetUserInfo(int? UserID)
+        {
+            return Bus.GetUserInfo(UserID);
+        }
+
         public string Create(Account Entity)
         {
             return Bus.Create(Entity);

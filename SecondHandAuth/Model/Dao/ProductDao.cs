@@ -25,14 +25,19 @@ namespace Model.Dao
             return Bus.Edit(Model);
         }
 
+        public string Delete(string id)
+        {
+            return Bus.Delete(id);
+        }
+
         public string DuplicateCode(string Code)
         {
             return Bus.DuplicateCode(Code);
         }
 
-        public List<Product> ViewProducts()
+        public List<Product> ViewProducts(string code)
         {
-            return Bus.ViewProducts();
+            return Bus.ViewProducts(code);
         }
 
         public List<ProductType> GetListProductType()
@@ -63,6 +68,17 @@ namespace Model.Dao
         public List<Inventory> GetInventory(string code)
         {
             return Bus.GetInventory(code);
+        }
+
+        // for user view
+        public List<Product> GetListOfMenu(string menu)
+        {
+            return Bus.GetListOfMenu(menu);
+        }
+
+        public List<string> GetListType(string menu)
+        {
+            return Bus.GetListType(menu);
         }
     }
 }

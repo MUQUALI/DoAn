@@ -45,6 +45,14 @@ namespace Model.Bus
             
         }
 
+        public string Delete(string id)
+        {
+            Product DelItem = DbContext.Products.Find(id);
+            DelItem.DelFlg = 1;
+            DbContext.SaveChanges();
+            return "200";
+        }
+
         public string DuplicateCode(string Code)
         {
             if(DbContext.Products.Count(x => x.PK_ProductID.Equals(Code)) > 0)
@@ -54,9 +62,9 @@ namespace Model.Bus
             return "";
         }
 
-        public List<Product> ViewProducts()
+        public List<Product> ViewProducts(string code)
         {
-            return DbContext.Products.Where(x => x.DelFlg.Equals(0)).ToList();
+            return DbContext.Products.Where(x => x.DelFlg.Equals(0) && x.PK_ProductID.Contains(code)).ToList();
         }
 
         public List<ProductType> GetListProductType()
@@ -104,6 +112,7 @@ namespace Model.Bus
                         {
                             ProductCode = odtg.FirstOrDefault().ProductID,
                             Size = odtg.FirstOrDefault().Custom.Size,
+                            FK_CustomID = odtg.FirstOrDefault().Custom.CustomID,
                             Color = odtg.FirstOrDefault().Custom.Color,
                             Quantity = ivt
                         };
@@ -119,6 +128,7 @@ namespace Model.Bus
                         {
                             ProductCode = bdtg.FirstOrDefault().ProductID,
                             Size = bdtg.FirstOrDefault().Custom.Size,
+                            FK_CustomID = bdtg.FirstOrDefault().Custom.CustomID,
                             Color = bdtg.FirstOrDefault().Custom.Color,
                             Quantity = ivt
                         };
@@ -134,6 +144,7 @@ namespace Model.Bus
                         {
                             ProductCode = gdtg.FirstOrDefault().ProductID,
                             Size = gdtg.FirstOrDefault().Custom.Size,
+                            FK_CustomID = gdtg.FirstOrDefault().Custom.CustomID,
                             Color = gdtg.FirstOrDefault().Custom.Color,
                             Quantity = ivt
                         };
@@ -169,6 +180,18 @@ namespace Model.Bus
 
 
             return ListOrderIvt;
+        }
+
+        // for user view
+        public List<Product> GetListOfMenu(string menu)
+        {
+            return DbContext.Products.Where(x => x.Firm.FirmName.Equals(menu)).ToList();
+        }
+
+        public List<string> GetListType(string menu)
+        {
+            List<Product> ListFilter = GetListOfMenu(menu);
+            return ListFilter.Select(x => x.ProductType.TypeName).Distinct().ToList();
         }
     }
 }

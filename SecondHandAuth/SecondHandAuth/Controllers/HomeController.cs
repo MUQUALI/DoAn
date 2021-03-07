@@ -1,5 +1,8 @@
 ﻿using Model;
+using Model.CustomModel;
 using Model.Dao;
+using PagedList;
+using SecondHandAuth.Commons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +13,75 @@ namespace SecondHandAuth.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        ProductDao prDao = new ProductDao();
+        AccountDao dao = new AccountDao();
+        [HttpGet]
+        public ActionResult Index(string UserID)
         {
-            return View();
+            List<Product> ListProduct = prDao.ViewProducts("");
+            List<Firm> ListFirm = prDao.GetListFirm();
+            ViewData["ListProduct"] = ListProduct;
+            ViewData["ListFirm"] = ListFirm;
+
+            ViewBag.Title = "Trang chủ";
+            
+            if(TempData["UserID"] != null)
+            {
+                ViewBag.UserID = TempData["UserID"].ToString();
+            }
+            if(Session[Constants.USER_SESION] == null)
+            {
+                // check cookie xem đã đăng nhập chưa
+                CheckLogin();
+            }
+            return View(ViewData);
         }
 
-        public ActionResult About()
+        public void CheckLogin()
         {
-            ViewBag.Message = "Your application description page.";
+            //string UserID = Request.Cookies["UserID"].ToString();
+            if(Request.Cookies["UserID"] != null)
+            {
+                string UserID = Request.Cookies["UserID"].Value.ToString();
+                Account UserLogin = dao.GetUserInfo(int.Parse(UserID));
+                UserSession UserInfo = new UserSession(UserLogin.Username, UserLogin.FK_RuleID, UserLogin.PK_AccountID);
 
-            return View();
+                Session[Constants.USER_SESION] = UserInfo;
+            }
         }
 
-        public ActionResult Contact()
+        public ActionResult ViewDetail(string id)
         {
-            ViewBag.Message = "Your contact page.";
+            Product Item = prDao.GetDetail(id);
+            List<Inventory> ListCustomOfItem = prDao.GetInventory(id);
+            
+            ViewData["Detail"] = Item;
+            ViewData["Customs"] = ListCustomOfItem;
 
-            return View();
+            List<Firm> ListFirm = prDao.GetListFirm();
+            ViewData["ListFirm"] = ListFirm;
+            return View(ViewData);
+        }
+
+        [HttpGet]
+        public ActionResult Filter(int? page, string menu)
+        {
+            ViewBag.Title = "menu";
+
+            List<Firm> ListFirm = prDao.GetListFirm();
+            ViewData["ListFirm"] = ListFirm;
+
+            int PageStart = Commons.Constants.PAGE_INDEX;
+            PageStart = page.HasValue ? int.Parse(page.ToString()) : 1;
+
+
+            IPagedList<Product> Data = prDao.GetListOfMenu(menu).ToPagedList(PageStart, 16);
+            List<string> ListType = prDao.GetListType(menu);
+            ViewBag.Menu = menu;
+
+            ViewData["Data"] = Data;
+            ViewData["ListType"] = ListType;
+            return View(ViewData);
         }
     }
 }

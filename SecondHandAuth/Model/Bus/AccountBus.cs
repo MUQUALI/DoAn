@@ -60,6 +60,11 @@ namespace Model.Bus
                 .Where(x => x.Username.Equals(username) && x.Password.Equals(password)).FirstOrDefault();
         }
 
+        public Account GetUserInfo(int? UserId)
+        {
+            return DbContext.Accounts.Find(UserId);
+        }
+
         public string Create(Account Entity)
         {
             if(DbContext.Accounts.Count(x => x.Username.Equals(Entity.Username)) > 0)

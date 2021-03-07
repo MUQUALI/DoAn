@@ -215,18 +215,23 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\ApiControllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\ApiControllers\CartController.cs" />
+    <Compile Include="Areas\Admin\ApiControllers\OrderController.cs" />
     <Compile Include="Areas\Admin\ApiControllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Models\AccountModel.cs" />
     <Compile Include="Areas\Admin\Models\LoginModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductFormModel.cs" />
     <Compile Include="Commons\Constants.cs" />
+    <Compile Include="Commons\Converter.cs" />
     <Compile Include="Commons\SessionFilter.cs" />
     <Compile Include="Commons\UserSession.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
@@ -242,6 +247,8 @@
   <ItemGroup>
     <Content Include="Assets\css\sb-admin-2.css" />
     <Content Include="Assets\css\sb-admin-2.min.css" />
+    <Content Include="Assets\img\banner.png" />
+    <Content Include="Assets\img\cart.png" />
     <Content Include="Assets\img\undraw_posting_photo.svg" />
     <Content Include="Assets\img\undraw_profile.svg" />
     <Content Include="Assets\img\undraw_profile_1.svg" />
@@ -255,9 +262,15 @@
     <Content Include="Assets\js\demo\datatables-demo.js" />
     <Content Include="Assets\js\sb-admin-2.js" />
     <Content Include="Assets\js\sb-admin-2.min.js" />
+    <Content Include="Assets\MyCss\buy.css" />
+    <Content Include="Assets\MyCss\home.css" />
     <Content Include="Assets\MyScript\AccountEvent.js" />
+    <Content Include="Assets\MyScript\AddToCart.js" />
+    <Content Include="Assets\MyScript\CartIndex.js" />
     <Content Include="Assets\MyScript\CustomValidateBox.js" />
+    <Content Include="Assets\MyScript\Home.js" />
     <Content Include="Assets\MyScript\MyAjax.js" />
+    <Content Include="Assets\MyScript\OrderEvent.js" />
     <Content Include="Assets\MyScript\Pagination.js" />
     <Content Include="Assets\MyScript\ProductEvent.js" />
     <Content Include="Assets\vendor\bootstrap\js\bootstrap.bundle.js" />
@@ -2148,6 +2161,8 @@
     <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Product\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Product\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Create.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fontawesome\all.js" />
     <Content Include="Scripts\fontawesome\all.min.js" />
@@ -2182,33 +2197,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Sweet\Alert.cshtml" />
     <Content Include="webfonts\fa-brands-400.svg" />
     <Content Include="webfonts\fa-regular-400.svg" />
     <Content Include="webfonts\fa-solid-900.svg" />
@@ -2224,6 +2213,10 @@
     <Content Include="webfonts\fa-brands-400.woff" />
     <Content Include="webfonts\fa-brands-400.ttf" />
     <Content Include="webfonts\fa-brands-400.eot" />
+    <Content Include="Views\Shared\_Ulayout.cshtml" />
+    <Content Include="Views\Home\ViewDetail.cshtml" />
+    <Content Include="Views\Home\Filter.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
