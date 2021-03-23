@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace SecondHandAuth.Commons
@@ -30,6 +31,23 @@ namespace SecondHandAuth.Commons
         {
             CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
             return num.ToString("#,###", cul.NumberFormat) + " VNĐ";
+        }
+
+        public static string convertToUnSign(string s)
+        {
+            string stFormD = s.Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder();
+            for (int ich = 0; ich < stFormD.Length; ich++)
+            {
+                System.Globalization.UnicodeCategory uc = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
+                if (uc != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(stFormD[ich]);
+                }
+            }
+            sb = sb.Replace('Đ', 'D');
+            sb = sb.Replace('đ', 'd');
+            return (sb.ToString().Normalize(NormalizationForm.FormD));
         }
     }
 }

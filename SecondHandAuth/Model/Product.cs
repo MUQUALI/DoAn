@@ -30,6 +30,9 @@ namespace Model
         [StringLength(500)]
         public string Name { get; set; }
 
+        [StringLength(500)]
+        public string NameSearch { get; set; }
+
         [Required]
         [StringLength(8000)]
         public string Images { get; set; }

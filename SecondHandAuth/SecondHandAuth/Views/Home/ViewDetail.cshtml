@@ -67,8 +67,17 @@
                         <input id="txtQty" type="text" name="txtQty" value="1">
                         <button type="button" onclick="addQty();">+</button>
                     </div>
-                    <button type="button" id="add-to-cart">Thêm Vào Giỏ Hàng</button>
-                    <a class="btn btn-danger" id="btn-buy">Mua ngay</a>
+                    @if(Detail.Quantity <= 0)
+                    {
+                        <span class="text-danger">Hết hàng</span>
+                        <button type="button" disabled class="btn" id="add-to-cart">Thêm Vào Giỏ Hàng</button>
+                        <button class="btn btn-danger" disabled id="btn-buy">Mua ngay</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn" id="add-to-cart">Thêm Vào Giỏ Hàng</button>
+                        <a class="btn btn-danger" id="btn-buy">Mua ngay</a>
+                    }
                 </form>
             </div>
         </div>
@@ -88,14 +97,14 @@
 		}
 
 		function subQty() {
-			let qty = document.getElementById('txtQty');
+		    let qty = document.getElementById('txtQty');
+		    if ($(qty).val() === "1") {
+		        return;
+		    }
 			qty.value = parseInt(qty.value) - 1;
 		}
 
-		$("#btn-buy").click(function () {
-		    window.sessionStorage.setItem("address", $("#txt_address").val());
-		    window.location.href = window.location.origin + "/Cart/Index";
-		})
+		
 </script>
 
 <script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>

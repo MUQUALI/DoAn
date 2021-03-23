@@ -19,6 +19,10 @@ namespace Model.Bus
 
         public string Create(Product Model)
         {
+            string UnSign = CommonDao.convertToUnSign(Model.Name);
+            string[] ArrName = UnSign.ToLower().Split(' ');
+            string HotName = String.Join("-", ArrName);
+            Model.NameSearch = CommonDao.convertToUnSign(HotName);
             DbContext.Products.Add(Model);
             DbContext.SaveChanges();
             return "200";
@@ -66,6 +70,8 @@ namespace Model.Bus
         {
             return DbContext.Products.Where(x => x.DelFlg.Equals(0) && x.PK_ProductID.Contains(code)).ToList();
         }
+
+        
 
         public List<ProductType> GetListProductType()
         {
@@ -120,7 +126,7 @@ namespace Model.Bus
             // get query tồn kho từ hóa đơn bán
             var GetSaleInventory =
                         from bdt in DbContext.BillDetails
-                        where bdt.ProductID.Equals(code)
+                        where bdt.ProductID.Equals(code) && bdt.Bill.Status != 4
                         group bdt by bdt.FK_CustomID
                         into bdtg
                         let ivt = bdtg.Sum(x => x.Quantity)
@@ -158,10 +164,10 @@ namespace Model.Bus
             {
                 foreach (Inventory item in ListSaleIvt)
                 {
-                    if (ListOrderIvt.IndexOf(item) >= 0)
+                    Inventory ItemSearch = ListOrderIvt.Find(x => x.FK_CustomID == item.FK_CustomID);
+                    if (ItemSearch != null)
                     {
-                        int index = ListOrderIvt.IndexOf(item);
-                        ListOrderIvt[index].Quantity -= item.Quantity;
+                        ItemSearch.Quantity -= item.Quantity;
                     }
                 }
             }
@@ -170,10 +176,10 @@ namespace Model.Bus
             {
                 foreach (Inventory item in ListBackIvt)
                 {
-                    if (ListOrderIvt.IndexOf(item) >= 0)
+                    Inventory ItemSearch = ListOrderIvt.Find(x => x.FK_CustomID == item.FK_CustomID);
+                    if (ItemSearch != null)
                     {
-                        int index = ListOrderIvt.IndexOf(item);
-                        ListOrderIvt[index].Quantity += item.Quantity;
+                        ItemSearch.Quantity += item.Quantity;
                     }
                 }
             }
@@ -183,15 +189,30 @@ namespace Model.Bus
         }
 
         // for user view
-        public List<Product> GetListOfMenu(string menu)
+        public List<Product> GetListOfMenu(string menu, int? type)
         {
-            return DbContext.Products.Where(x => x.Firm.FirmName.Equals(menu)).ToList();
+            List<Product> ListFilter = DbContext.Products.Where(x => x.Firm.FirmName.Equals(menu)).ToList(); ;
+            if(type != null)
+            {
+                ListFilter = ListFilter.Where(x => x.FK_ProductTypeID == type).ToList();
+            }
+            return ListFilter;
         }
 
-        public List<string> GetListType(string menu)
+        public List<OutSubMenu> GetListType(string menu)
         {
-            List<Product> ListFilter = GetListOfMenu(menu);
-            return ListFilter.Select(x => x.ProductType.TypeName).Distinct().ToList();
+            List<ProductType> ListFilter = DbContext.ProductTypes.ToList();
+            List<OutSubMenu> Submenu = new List<OutSubMenu>();
+            foreach (ProductType item in ListFilter)
+            {
+                OutSubMenu Sub = new OutSubMenu();
+                Sub.FirmName = menu;
+                Sub.Type = (int)item.PK_TypeID;
+                Sub.TypeName = item.TypeName;
+
+                Submenu.Add(Sub);
+            }
+            return Submenu;
         }
     }
 }

@@ -16,9 +16,17 @@ namespace SecondHandAuth.Controllers
         ProductDao prDao = new ProductDao();
         AccountDao dao = new AccountDao();
         [HttpGet]
-        public ActionResult Index(string UserID)
+        public ActionResult Index(string UserID, string SearchKey = "")
         {
-            List<Product> ListProduct = prDao.ViewProducts("");
+            List<Product> ListProduct = null;
+            if (SearchKey != "")
+            {
+                ListProduct = prDao.SearchUnsign(Converter.convertToUnSign(SearchKey.ToLower()));
+            }
+            else
+            {
+                ListProduct = prDao.ViewProducts("");
+            }
             List<Firm> ListFirm = prDao.GetListFirm();
             ViewData["ListProduct"] = ListProduct;
             ViewData["ListFirm"] = ListFirm;
@@ -64,9 +72,9 @@ namespace SecondHandAuth.Controllers
         }
 
         [HttpGet]
-        public ActionResult Filter(int? page, string menu)
+        public ActionResult Filter(int? page, string menu, int? type = null)
         {
-            ViewBag.Title = "menu";
+            ViewBag.Title = menu;
 
             List<Firm> ListFirm = prDao.GetListFirm();
             ViewData["ListFirm"] = ListFirm;
@@ -75,8 +83,8 @@ namespace SecondHandAuth.Controllers
             PageStart = page.HasValue ? int.Parse(page.ToString()) : 1;
 
 
-            IPagedList<Product> Data = prDao.GetListOfMenu(menu).ToPagedList(PageStart, 16);
-            List<string> ListType = prDao.GetListType(menu);
+            IPagedList<Product> Data = prDao.GetListOfMenu(menu, type).ToPagedList(PageStart, 16);
+            List<OutSubMenu> ListType = prDao.GetListType(menu);
             ViewBag.Menu = menu;
 
             ViewData["Data"] = Data;

@@ -6,6 +6,12 @@ $("#add-to-cart").click(function () {
             // chưa đăng nhập
             var carts = [];
             var item = await getItemAddToCart();
+            var maxQty = await apiGetData("GET", "/api/Cart/GetMaxQtyOfProduct", {ProductID: item.productID, FK_Custom: item.custom});
+            if(item.qty > maxQty) {
+                alert("Bạn đã mua quá số lượng cho phép!");
+                return;
+            }
+
             if (!window.localStorage.getItem("myCart")) {
                 carts.push(item);
                 window.localStorage.setItem("myCart", JSON.stringify(carts));
@@ -15,6 +21,11 @@ $("#add-to-cart").click(function () {
             else {
                 carts = JSON.parse(window.localStorage.getItem("myCart"));
 
+                var inCart = carts.find(data => data.productID == item.productID &&  data.custom == item.custom);
+                if(item.qty > (maxQty - inCart.qty)) {
+                    alert("không thể mua thêm nữa !");
+                    return;
+                }
                 updateCart(carts, item);
             }
         }
@@ -22,10 +33,19 @@ $("#add-to-cart").click(function () {
         else {
             var carts = JSON.parse(window.localStorage.getItem("myCart"));
             var itemAdd = await getItemAddToCart();
+            // check max qty
+            var maxQty = await apiGetData("GET", "/api/Cart/GetMaxQtyOfProduct", {ProductID: itemAdd.productID, FK_Custom: itemAdd.custom});
+            
             // có giỏ hàng trong localStorage
             if(carts) {
                 updateCart(carts, itemAdd);
                 carts = JSON.parse(window.localStorage.getItem("myCart"));
+
+                var inCart = carts.find(data => data.productID == item.productID);
+                if(item.qty > (maxQty - inCart.qty)) {
+                    alert("Bạn đã mua quá số lượng cho phép!");
+                    return;
+                }
 
                 var Model = {
                     UserID: window.localStorage.getItem("UserID"),
@@ -52,18 +72,28 @@ $("#add-to-cart").click(function () {
                     }
 
                     apiPostJsonData("/api/Cart/EditCart", JSON.stringify(Model)).then(function(data) {
+                        
                         var objData = JSON.parse(data);
+                        if(objData.errQty) {
+                            alert(objData.errQty);
+                            return;
+                        }
                         $("#cartQTY").html(objData.totalItem);
                         window.localStorage.setItem("totalItem", objData.totalItem);
                         window.localStorage.setItem("cartID", objData.cartID);
                     });
                 }
-                // đã đăng nhập, chưa có giỏ hàng trong db
+                // đã đăng nhập, chưa có giỏ hàng localStoarage và db
                 else {
                     var Model = {
                         UserID: window.localStorage.getItem("UserID"),
                         ItemAddToCart: itemEdit,
                         TotalMoney: parseInt(itemEdit.price) * parseInt(itemEdit.qty)
+                    }
+
+                    if(itemEdit.qty > maxQty) {
+                        alert("Bạn đã mua quá số lượng cho phép!");
+                        return;
                     }
 
                     apiPostJsonData("/api/Cart/AddToCart", JSON.stringify(Model)).then(function(data) {
@@ -84,6 +114,12 @@ async function getItemAddToCart() {
     var price = await apiGetData("GET", "/api/Product/GetPriceOfProduct", {id: productID});
     var custom = $("#sl-custom").val();
     var qty = $("#txtQty").val();
+
+    if (qty.match(/\D/g)) {
+        alert("Số lượng chỉ nhập số nguyên dương !");
+        $("#txtQty").focus();
+        return false;
+    }
     
     var product = {
         productID: productID,
@@ -121,3 +157,40 @@ function getTotalMoney(carts) {
     }
     return total;
 }
+
+$("#btn-buy").click(async function () {
+    //window.sessionStorage.setItem("address", $("#txt_address").val());
+    if(!window.localStorage.getItem("UserID")) {
+        window.location.href = window.location.origin + "/Cart/Index";
+    }
+    // có giỏ hàng nhưng số lượng sp = 0
+    if(window.localStorage.getItem("cartID") && window.localStorage.getItem("totalItem") === "0") {
+       $("#add-to-cart").trigger("click");
+    }
+
+    if(window.localStorage.getItem("cartID") && window.localStorage.getItem("totalItem") !== "0") {
+        window.location.href = window.location.origin + "/Cart/Index";
+    }
+    else {
+        var ItemAdd = await getItemAddToCart();
+        var maxQty = await apiGetData("GET", "/api/Cart/GetMaxQtyOfProduct", {ProductID: ItemAdd.productID, FK_Custom: ItemAdd.custom});
+
+        if(ItemAdd.qty > maxQty) {
+            alert("Hạn mức mua tối đa là: " + maxQty);
+            return;
+        }
+        var Model = {
+            UserID: window.localStorage.getItem("UserID"),
+            ItemAddToCart: ItemAdd,
+            TotalMoney: parseInt(ItemAdd.price) * parseInt(ItemAdd.qty)
+        }
+
+        apiPostJsonData("/api/Cart/AddToCart", JSON.stringify(Model)).then(function(data) {
+            var objData = JSON.parse(data);
+            $("#cartQTY").html(objData.totalItem);
+            window.localStorage.setItem("totalItem", objData.totalItem);
+            window.localStorage.setItem("cartID", objData.cartID);
+            window.location.href = window.location.origin + "/Cart/Index";
+        })
+    }
+})

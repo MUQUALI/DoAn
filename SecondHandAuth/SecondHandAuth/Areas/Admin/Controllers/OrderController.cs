@@ -17,7 +17,7 @@ namespace SecondHandAuth.Areas.Admin.Controllers
         OrderDao Dao = new OrderDao();
         // GET: Admin/Order
         [HttpGet]
-        public ActionResult Index(int? page, string OrderID, string FromDate, string ToDate)
+        public ActionResult Index(int? page, string OrderID, string FromDate, string ToDate, int? Status)
         {
             int PageStart = Commons.Constants.PAGE_INDEX;
             PageStart = page.HasValue ? int.Parse(page.ToString()) : 1;
@@ -57,7 +57,7 @@ namespace SecondHandAuth.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(ViewOrder Model)
         {
-            string ts = JsonConvert.SerializeObject(Model);
+            //string ts = JsonConvert.SerializeObject(Model);
             //string bla = Model.ToString();
             List<ViewOrder.ItemDetail> ListDetail = JsonConvert.DeserializeObject<List<ViewOrder.ItemDetail>>(Model.ListDetail);
             UserSession UserLogin = (UserSession)Session[Constants.USER_SESION];

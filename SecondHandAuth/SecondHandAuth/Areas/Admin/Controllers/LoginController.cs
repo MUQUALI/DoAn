@@ -16,7 +16,16 @@ namespace SecondHandAuth.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            Response.Cookies.Remove("UserID");
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            Session.RemoveAll();
+            Session.Clear();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -40,6 +49,7 @@ namespace SecondHandAuth.Areas.Admin.Controllers
 
                     if (UserInfo.Permission != Constants.CUSTOMER)
                     {
+                        TempData["UserID"] = UserInfo.PK_AccountID;
                         return RedirectToAction("Index", "Home", new { Area = "Admin", UserID = UserInfo.PK_AccountID.ToString() });
                     }
                     else

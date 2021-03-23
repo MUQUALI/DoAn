@@ -35,9 +35,16 @@ namespace SecondHandAuth.Areas.Admin.ApiControllers
         [HttpPost]
         public JsonResult<string> AddToCart(object Model)
         {
-            InViewCart InData = JsonConvert.DeserializeObject<InViewCart>(Model.ToString());
+            try
+            {
+                InViewCart InData = JsonConvert.DeserializeObject<InViewCart>(Model.ToString());
 
-            return Json(Dao.AddToCart(InData, InData.UserID));
+                return Json(Dao.AddToCart(InData, InData.UserID));
+            }catch(Exception e)
+            {
+                return Json("");
+            }
+            
         }
 
         [HttpPost]
@@ -63,6 +70,21 @@ namespace SecondHandAuth.Areas.Admin.ApiControllers
             int FK_Custom = int.Parse(HttpContext.Current.Request.Form["custom"].ToString());
 
             return Json(Dao.UpdateCart(CartID, ProductID, Qty, FK_Custom));
+        }
+
+        [HttpPost]
+        public JsonResult<string> DeleteItem()
+        {
+            int CartID = int.Parse(HttpContext.Current.Request.Form["cartID"].ToString());
+            string ProductID = HttpContext.Current.Request.Form["code"].ToString();
+            int FK_Custom = int.Parse(HttpContext.Current.Request.Form["custom"].ToString());
+            return Json(Dao.DeleteItem(ProductID, CartID, FK_Custom));
+        }
+
+        [HttpGet]
+        public JsonResult<int> GetMaxQtyOfProduct(string ProductID, int FK_Custom)
+        {
+            return Json(Dao.GetMaxQtyOfProduct(ProductID, FK_Custom));
         }
     }
 }

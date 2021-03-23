@@ -1,7 +1,8 @@
 ﻿@using PagedList;
 @using System.Collections.Generic;
-@using SecondHandAuth.Commons
-@using PagedList.Mvc
+@using SecondHandAuth.Commons;
+@using PagedList.Mvc;
+@using Model.CustomModel;
 @{
     Layout = "~/Views/Shared/_Ulayout.cshtml";
     IPagedList<Model.Product> Data = (IPagedList<Model.Product>)ViewData["Data"];
@@ -11,16 +12,19 @@
     List<Model.Product> Row3 = Data.Skip(8).Take(4).ToList();
     List<Model.Product> Row4 = Data.Skip(12).Take(4).ToList();
 
-    List<string> ListType = (List<string>)ViewData["ListType"];
+    List<OutSubMenu> ListType = (List<OutSubMenu>)ViewData["ListType"];
 }
 <link rel="stylesheet" type="text/css" href="~/Assets/MyCss/home.css" />
 <div class="row">
     <div class="col-2">
         <ul class="nav flex-column">
-            @foreach (string item in ListType)
+            <li class="nav-item">
+                <a class="nav-link" href="/Home/Filter?menu=@ListType.ToArray()[0].FirmName">Tất cả</a>
+            </li>
+            @foreach (OutSubMenu item in ListType)
             {
                 <li class="nav-item">
-                    <a class="nav-link" href="#">@item</a>
+                    <a class="nav-link" href="/Home/Filter?menu=@item.FirmName&type=@item.Type">@item.TypeName</a>
                 </li>
             }
         </ul>

@@ -32,6 +32,5 @@ C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\Model\bin\Microsoft.AI.Web.xm
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\Model\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\Model\bin\Microsoft.ApplicationInsights.xml
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\Model\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\Model\obj\Debug\Model.dll
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\Model\obj\Debug\Model.pdb

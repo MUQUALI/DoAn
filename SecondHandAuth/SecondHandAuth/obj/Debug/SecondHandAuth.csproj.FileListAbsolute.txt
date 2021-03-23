@@ -41,6 +41,8 @@ C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Microsoft.
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Model.dll
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Newtonsoft.Json.dll
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Owin.dll
+C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.dll
+C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.Mvc.dll
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\System.Net.Http.Formatting.dll
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\System.Web.Helpers.dll
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\System.Web.Http.dll
@@ -59,6 +61,8 @@ C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Microsoft.
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Microsoft.ApplicationInsights.xml
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.xml
+C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.Mvc.xml
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\System.Web.Helpers.xml
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\System.Web.Mvc.xml
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\System.Web.Optimization.xml
@@ -88,7 +92,3 @@ C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\Microsoft.
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\obj\Debug\SecondHandAuth.csprojResolveAssemblyReference.cache
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\obj\Debug\SecondHandAuth.dll
 C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\obj\Debug\SecondHandAuth.pdb
-C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.dll
-C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.Mvc.dll
-C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.xml
-C:\Users\Admin\Desktop\DOAN\Project\SecondHandAuth\SecondHandAuth\bin\PagedList.Mvc.xml

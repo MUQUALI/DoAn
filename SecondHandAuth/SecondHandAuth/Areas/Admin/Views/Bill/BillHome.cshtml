@@ -1,0 +1,224 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<Model.Bill>  
+@{
+    ViewBag.Title = "Quản lý hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Quản lý đơn hàng</h1>
+<div class="card shadow mb-4 p-3">
+    <form class="form-group w-100 hidden" action="/Admin/Bill/Index" method="get">
+        <div class="row justify-content-center">
+            <label for="from_date" class="col-1 col-form-label">Từ ngày</label>
+            <div class="col-2">
+                <input class="form-control" value="@ViewBag.FromDate" name="FromDate" type="date" id="from_date">
+            </div>
+
+            <label for="from_date" class="col-1 col-form-label">Đến ngày</label>
+            <div class="col-2">
+                <input class="form-control" value="@ViewBag.ToDate" name="ToDate" type="date" id="to_date">
+            </div>
+
+            <label class="col-1 col-form-label" for="slStatus">Tình trạng</label>
+            <div class="col-2 d-flex">
+                <select name="Status" class="form-control" id="slStatus">
+                    <option></option>
+                    <option value="0">Chờ xác nhận</option>
+                    <option value="1">Đã xác nhận</option>
+                    <option value="2">Đang giao hàng</option>
+                    <option value="3">Đã giao hàng</option>
+                    <option value="4">Hủy</option>
+                </select>
+                <input type="hidden" id="hidden-status" value="@ViewBag.Status" />
+            </div>
+        </div>
+        <div class="row mt-2 justify-content-center">
+            <input type="text" name="BillID" value="@ViewBag.BillID" class="form-control col-8" id="search_area" placeholder="Mã đơn đặt hàng" />
+            <button type="submit" id="btn_search" class="btn btn-primary col-1 form-control">Tìm kiếm</button>
+        </div>
+    </form>
+    
+
+    <div class="row">
+        <div class="col-md-2 offset-10 text-right">
+            <a class="btn btn-primary" href="~/Admin/Bill/Create" role="button">Tạo đơn hàng</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Dữ liệu đơn đặt hàng</h6>
+        @if (ViewBag.Mes != null)
+            {
+            <div id="err_dup" class="alert alert-success" role="alert">
+                @ViewBag.Mes
+            </div>
+        }
+    </div>
+    <div class="card-body row">
+        <div class="table-responsive col-12">
+            <table class="table table-bordered text-dark table-sm table-responsive-sm" id="dataTable" width="100" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã đơn hàng</th>
+                        <th>Khách hàng</th>
+                        <th>Địa chỉ giao hàng</th>
+                        <th>Số điện thoại</th>
+                        <th>Ngày lập</th>
+                        <th>Tổng tiền</th>
+                        <th>Tình trạng</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody id="area_render">
+                    @foreach (Model.Bill item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.PK_Bill_ID
+                            </td>
+
+                            <td>
+                                @if (item.FK_CustomerID != null && @item.Customer != null)
+                                {
+                                    @item.Customer.Name
+                                }
+                                else
+                                {
+                                    @item.Account.Username
+                                }
+                            </td>
+                            <td>@item.ShipAddress</td>
+                            <td>@item.PhoneContact</td>
+                            <td>@item.CreatedDate.ToString("dd/MM/yyyy hh:mm:ss tt")</td>
+                            <td>@item.TotalMoney</td>
+                            <td>
+                                <input type="hidden" value="@item.Status" id="status-val" />
+                                <select id="sl-status" class="form-control sl-status" data-id="@item.PK_Bill_ID" >
+                                    @if (item.Status == 0)
+                                    {
+                                        <option value="0" selected class="text-warning">Chờ xác nhận</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="0" class="text-warning">Chờ xác nhận</option>
+                                    }
+                                    @if (item.Status == 1)
+                                    {
+                                        <option value="1" selected class="text-success">Đã xác nhận</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1" class="text-success">Đã xác nhận</option>
+                                    }
+                                    @if (item.Status == 2)
+                                    {
+                                        <option value="2" selected class="text-info">Đang giao hàng</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="2" class="text-info">Đang giao hàng</option>
+                                    }
+                                    @if (item.Status == 3)
+                                    {
+                                        <option value="3" selected class="text-primary">Đã giao hàng</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="3" class="text-primary">Đã giao hàng</option>
+                                    }
+                                    @if (item.Status == 4)
+                                    {
+                                        <option value="4" selected class="text-danger">Hủy</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="4" class="text-danger">Hủy</option>
+                                    }
+                                </select>
+                                
+                            </td>
+                            <td>@item.Note</td>
+                            <td>
+                                <a class="ic_detail" title="Chi tiết" href="/Admin/Bill/Detail?BillID=@item.PK_Bill_ID"><i class="fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+
+<div class="row">
+    <div class="col-3">
+        <div class="pagination justify-content-start">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, ViewBag.OrderID, ViewBag.FromDate, ViewBag.ToDate }),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item", "page-link" }
+            })
+        </div>
+    </div>
+</div>
+<script>
+
+    $("#slStatus").val($("#hidden-status").val());
+
+    function loadStatus() {
+        $(".sl-status").children().each(function (index, item) {
+            if($(item).attr("selected")) {
+                
+                $(item).parent().addClass($(item).attr("class"))
+            }
+            
+            if ($(item).parent().val() == 3 || $(item).parent().val() == 4) {
+                $(item).parent().attr("disabled", true);
+            }
+        })
+    }
+
+    loadStatus();
+
+    $(".sl-status").focus(function () {
+        preVal = $(this).val();
+    }).change(function () {
+        var cf = confirm("Bạn muốn thay đổi trạng thái đơn hàng chứ ?");
+        var formData = new FormData();
+        var selectItem = $(this);
+        var optionSelected = $("option:selected", this);
+
+        var bid = $(this).attr("data-id");
+        var status = $(this).val();
+        var userId = window.localStorage.getItem("UserID");
+        formData.append("bid", bid);
+        formData.append("status", status);
+        formData.append("userId", userId);
+        if (cf) {
+            apiPostData("/api/Bill/ChangeStatusBill", formData).then(function (data) {
+                selectItem.val(data);
+                selectItem.removeClass();
+                selectItem.addClass($(optionSelected).attr("class"));
+                selectItem.addClass("form-control sl-status");
+
+                if (selectItem.val() == 3 || selectItem.val() == 4) {
+                    selectItem.attr("disabled", true);
+                }
+                else {
+                    selectItem.attr("disabled", false);
+                }
+            })
+        }
+        else {
+            selectItem.val(preVal);
+            return false;
+        }
+    })
+    
+</script>
+
+
+

@@ -23,7 +23,7 @@ namespace Model.Dao
 
         public ViewOrderDetail GetDetail(string code)
         {
-            return Bus.GetDetail(code);
+            return Bus.GetInfoProduct(code);
         }
 
         public int CreateOrderRecord(ViewOrder Model, int AccountID, List<ViewOrder.ItemDetail> ListDetail)

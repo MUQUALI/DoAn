@@ -20,6 +20,7 @@ namespace Model.CustomModel
 
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
+        public int CustomID { get; set; }
         public int Size { get; set; }
         public string Color { get; set; }
         public int Quantity { get; set; }

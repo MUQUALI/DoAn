@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Báo cáo thống kê";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/ReportEvent.js"></script>
+<div class="row">
+    <div class="col-10 offset-1">
+        <canvas id="saleChart"></canvas>
+    </div>
+</div>
+
+<script>
+    /*var ctx = document.getElementById('saleChart');
+    var revenueOfYearData = getRevenueOfYear(2021);
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: [
+                {
+                    label: 'Doanh thu trong năm',
+                    data: revenueOfYearData,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    lineTension: 0,
+                    order: 1
+                },
+                {
+                    label: 'Chi phí trong năm',
+                    data: [700, 200, 0, 0, 0, 450, 1500],
+                    fill: false,
+                    borderColor: 'red',
+                    lineTension: 0,
+                    order: 2
+                }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: 'Doanh thu'
+            }
+        }
+    });*/
+</script>
+

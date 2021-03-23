@@ -28,7 +28,7 @@ namespace Model.Bus
             }
         }
 
-        public ViewOrderDetail GetDetail(string code)
+        public ViewOrderDetail GetInfoProduct(string code)
         {
             Product info = DbContext.Products.Find(code);
             ViewOrderDetail Detail = new ViewOrderDetail();

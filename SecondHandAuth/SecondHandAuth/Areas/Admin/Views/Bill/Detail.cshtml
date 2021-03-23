@@ -1,0 +1,157 @@
+﻿@model Model.Bill
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    string CusName = "";
+    if (Model.FK_CustomerID == null)
+    {
+        CusName = Model.Account.Username;
+    }
+    else
+    {
+        CusName = Model.Customer.Name;
+    }
+    int No = 0;
+}
+
+<div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-12 p-3 mb-2 bg-info text-white text-center">
+            Chi tiết đơn hàng
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @if (ViewBag.Mes != null)
+                {
+                    <div id="err_dup" class="alert alert-success" role="alert">
+                        @ViewBag.Mes
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2 border border-info justify-content-end">
+        <div class="col-2 p-3 mb-2">
+            <button id="btn_give_back" class="btn btn-warning w-100" role="button">Khách đổi/trả hàng</button>
+        </div>
+        <div class="col-2 p-3 mb-2">
+            <a href="~/Admin/Bill" class="btn btn-dark w-100" role="button">Thoát</a>
+        </div>
+    </div>
+    <form id="frm_give_back" method="post" action="/Admin/Bill/GiveBack" class="row d-flex justify-content-center border border-info rounded mb-2 p-2">
+        <div class="col-3">
+            <label id="lb_bill_id" for="txt_sup">Số hóa đơn</label>
+            <input id="lb_bill_id" readonly class="form-control"  name="BillID" value="@Model.PK_Bill_ID" type="text" />
+
+            <label for="txt_sup">Ngày lập</label>
+            <input id="txt_phone" readonly value="@Model.CreatedDate.ToString("dd/MM/yyyy hh:mm:ss tt")" class="form-control" name="CreatedDate"  type="text" />
+        </div>
+
+        <div class="col-3">
+            <label for="txt_sup">Khách hàng</label>
+            <input id="txt_phone" readonly class="form-control" value="@CusName" name="Customer" type="text" />
+
+            <label id="lb_sup" for="txt_sup">Số điện thoại</label>
+            <input id="txt_sup" readonly class="form-control" name="Phone" value="@Model.PhoneContact" type="text" />
+        </div>
+
+        <div class="col-3">
+            <label for="txt_sup">Tổng tiền</label>
+            <input id="txt_phone" readonly class="form-control" value="@Model.TotalMoney" name="Customer" type="text" />
+
+            <label id="lb_sup" for="txt_sup">Tình trạng</label>
+            @if (Model.Status == 0)
+            {
+                <input id="txt_sup" readonly class="form-control" name="Phone" value="Chờ xác nhận" type="text" />
+            }
+            else if (Model.Status == 1)
+            {
+                <input id="txt_sup" readonly class="form-control" name="Phone" value="Đã xác nhận" type="text" />
+            }
+            else if (Model.Status == 2)
+            {
+                <input id="txt_sup" readonly class="form-control" name="Phone" value="Đang giao hàng" type="text" />
+            }
+            else if (Model.Status == 3)
+            {
+                <input id="txt_sup" readonly class="form-control" name="Phone" value="Đã giao hàng" type="text" />
+            }
+            else if (Model.Status == 4)
+            {
+                <input id="txt_sup" readonly class="form-control" name="Phone" value="Hủy" type="text" />
+            }
+            else if (Model.Status == 5)
+            {
+                <input id="txt_sup" readonly class="form-control" name="Phone" value="Khách trả lại" type="text" />
+            }
+
+        </div>
+
+        <div class="col-3">
+            <label for="txt_note">Ghi chú</label>
+            <textarea class="form-control" readonly id="txt_note" name="Note" rows="3">@Model.Note</textarea>
+        </div>
+    </form>
+    <form id="frm_detail" name="frmCreate" class="row m-auto d-flex justify-content-center">
+        <div class="col-12 border border-info rounded pt-3 pb-3">
+            <span>Chi tiết đặt hàng</span>
+            <table class="table table-bordered">
+
+                <thead>
+                    <tr>
+                        <th>Số thứ tự</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Size</th>
+                        <th>Màu</th>
+                        <th>Giá nhập</th>
+                        <th>Số lượng</th>
+                        <th>Thành Tiền</th>
+                    </tr>
+                </thead>
+                <tbody id="body_detail">
+                    @foreach (Model.BillDetail item in Model.BillDetails)
+                    {
+                        No++;
+                        <tr>
+                            <td>@No</td>
+                            <td>@item.ProductID</td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Custom.Size</td>
+                            <td>@item.Custom.Color</td>
+                            <td>@item.UnitPrice</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Money</td>
+                        </tr>
+                    }
+                </tbody>
+
+                <tfoot id="total_detail">
+
+                </tfoot>
+            </table>
+        </div>
+    </form>
+    <div class="row mt-2 mb-2">
+        <div class="col-12 p-3 text-center">
+            <button type="button" id="btn_save" disabled class="btn btn-success">Lưu</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
+<script type="text/javascript">
+    $("#btn_give_back").click(function () {
+        $("#txt_note").attr("readonly", false);
+        $("#txt_note").focus();
+        $("#btn_save").attr("disabled", false);
+    })
+
+    $("#btn_save").click(function () {
+        if ($("#txt_note").val() == "") {
+            alert("Bạn phải nhập lý do khách trả lại hàng");
+            return;
+        }
+        $("#frm_give_back").submit();
+    })
+</script>
+

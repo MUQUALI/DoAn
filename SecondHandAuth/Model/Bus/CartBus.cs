@@ -10,9 +10,11 @@ namespace Model.Bus
     public class CartBus
     {
         SecondHandDbContext DbContext = null;
+        ProductBus PBus = null;
         public CartBus()
         {
             DbContext = DataProvider.GetInstance();
+            PBus = new ProductBus();
         }
         public string AddToCart(InViewCart Model, int? UserID)
         {
@@ -82,14 +84,26 @@ namespace Model.Bus
         {
             Cart cart = DbContext.Carts.Find(CartID);
             Product info = DbContext.Products.Find(Item.productID);
+            int MaxQtyItem = GetMaxQtyOfProduct(Item.productID, Item.custom);
+            // check max qty
+            
             CartDetail EditDetail = cart.CartDetails.Where(x => x.ProductID.Equals(Item.productID) && x.FK_CustomID == Item.custom).FirstOrDefault();
             if(EditDetail != null)
             {
+                if (Item.qty > MaxQtyItem - EditDetail.Quantity)
+                {
+                    return "{\"errQty\":\"Lượng sản phẩm còn lại là: " + (MaxQtyItem - EditDetail.Quantity )+ "\"}";
+                }
                 EditDetail.Quantity += Item.qty;
+                EditDetail.Money = EditDetail.Quantity * EditDetail.UnitPrice;
                 DbContext.SaveChanges();
             }
             else
             {
+                if (Item.qty > MaxQtyItem)
+                {
+                    return "{\"errQty\":\"Lượng sản phẩm còn lại là: " + MaxQtyItem + "\"}";
+                }
                 CartDetail Detail = new CartDetail();
                 
                 Detail.CartID = CartID;
@@ -116,13 +130,14 @@ namespace Model.Bus
             Cart cart = DbContext.Carts.Find(CartID);
             CartDetail ItemEdit = cart.CartDetails.Where(x => x.ProductID.Equals(ProductCode) && x.FK_CustomID == FK_Custom).FirstOrDefault();
             ItemEdit.Quantity += Qty;
-            ItemEdit.Money -= ItemEdit.Quantity * ItemEdit.UnitPrice;
+            ItemEdit.Money = ItemEdit.Quantity * ItemEdit.UnitPrice;
 
             // += do nếu số lượng truyền vào âm thì trở thành phép trừ
             cart.TotalMoney += Qty * ItemEdit.UnitPrice;
+            cart.TotalItem += Qty;
             DbContext.SaveChanges();
 
-            string OutData = "{\"totalMoney\":" + cart.TotalMoney + ", \"money\":" + ItemEdit.Money + " }";
+            string OutData = "{\"totalMoney\":" + cart.TotalMoney + ", \"money\":" + ItemEdit.Money + " , \"totalItem\":" + cart.TotalItem + " }";
             return OutData;
         }
 
@@ -156,6 +171,78 @@ namespace Model.Bus
             OutData.ListDetail = Details;
 
             return OutData;
+        }
+
+        public string DeleteItem(string ProductID, int CartID, int CustomID)
+        {
+            Cart cart = DbContext.Carts.Find(CartID);
+
+            CartDetail Detail = cart.CartDetails.Where(x => x.ProductID.Equals(ProductID) && x.FK_CustomID == CustomID).FirstOrDefault();
+
+            if(Detail == null)
+            {
+                return "";
+            }
+            cart.TotalItem -= Detail.Quantity;
+            cart.TotalMoney -= Detail.Quantity * Detail.UnitPrice;
+            cart.CartDetails.Remove(Detail);
+            DbContext.SaveChanges();
+
+            return "{\"totalMoney\":" + cart.TotalMoney + ", \"totalItem\":" + cart.TotalItem + " }";
+        }
+
+        public int GetMaxQtyOfProduct(string ProductID, int FK_Custom)
+        {
+            List<Inventory> Invens = PBus.GetInventory(ProductID);
+
+            Inventory Inventory = Invens.Where(x => x.FK_CustomID == FK_Custom).FirstOrDefault();
+
+            return Inventory.Quantity;
+        }
+
+        public Bill CheckOut(InCheckOut Model)
+        {
+            Cart MyCart = DbContext.Carts.Find(Model.CartID);
+            Bill NBill = new Bill();
+
+            Account CustomerAcc = DbContext.Accounts.Find(MyCart.FK_UserID);
+            if(CustomerAcc.FK_CustomerID != null)
+            {
+                NBill.FK_CustomerID = CustomerAcc.FK_CustomerID;
+            }
+            else
+            {
+                NBill.FK_AccountID = CustomerAcc.PK_AccountID;
+            }
+            
+            NBill.CreatedDate = DateTime.Now;
+            NBill.TotalMoney = (decimal)MyCart.TotalMoney;
+            NBill.Status = 0;
+            NBill.DelFlg = 0;
+            NBill.ShipAddress = Model.ReceiverAddress;
+            NBill.PhoneContact = Model.Phone;
+
+            DbContext.Bills.Add(NBill);
+
+            foreach (CartDetail item in MyCart.CartDetails)
+            {
+                BillDetail Detail = new BillDetail();
+                Detail.Bill_ID = NBill.PK_Bill_ID;
+                Detail.ProductID = item.ProductID;
+                Detail.ProductName = item.ProductName;
+                Detail.Quantity = item.Quantity;
+                Detail.UnitPrice = item.UnitPrice;
+                Detail.Money = item.Money;
+                Detail.FK_CustomID = item.FK_CustomID;
+
+                Product ItemChange = DbContext.Products.Find(item.ProductID);
+                ItemChange.Quantity -= item.Quantity;
+
+                DbContext.BillDetails.Add(Detail);
+            }
+            DbContext.SaveChanges();
+
+            return NBill;
         }
     }
 }

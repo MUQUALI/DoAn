@@ -33,5 +33,20 @@ namespace Model.Dao
         {
             return Bus.UpdateCart(CartID, ProductCode, Qty, FK_Custom);
         }
+
+        public string DeleteItem(string ProductID, int CartID, int CustomID)
+        {
+            return Bus.DeleteItem(ProductID, CartID, CustomID);
+        }
+
+        public int GetMaxQtyOfProduct(string ProductID, int FK_Custom)
+        {
+            return Bus.GetMaxQtyOfProduct(ProductID, FK_Custom);
+        }
+
+        public Bill CheckOut(InCheckOut Model)
+        {
+            return Bus.CheckOut(Model);
+        }
     }
 }

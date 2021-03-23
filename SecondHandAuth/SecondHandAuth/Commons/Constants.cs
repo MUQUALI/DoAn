@@ -24,5 +24,27 @@ namespace SecondHandAuth.Commons
 
         // product page size
         public static int PRODUCT_PAGE_SIZE = 5;
+
+        public static int STATUS_0 = 0;
+
+        public static int STATUS_1 = 1;
+
+        public static int STATUS_2 = 2;
+
+        public static int STATUS_3 = 3;
+
+        public static int STATUS_4 = 4;
+
+        public static string STR_STATUS_0 = "Chờ xác nhận";
+
+        public static string STR_STATUS_1 = "Đã xác nhận";
+
+        public static string STR_STATUS_2 = "Đang giao";
+
+        public static string STR_STATUS_3 = "Đã giao hàng";
+
+        public static string STR_STATUS_4 = "Hủy";
+
+        public static int ID_KHACHLE = 3;
     }
 }

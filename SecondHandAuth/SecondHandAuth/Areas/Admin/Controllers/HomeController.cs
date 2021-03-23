@@ -13,6 +13,10 @@ namespace SecondHandAuth.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Index()
         {
+            if (TempData["UserID"] != null)
+            {
+                ViewBag.UserID = TempData["UserID"].ToString();
+            }
             return View();
         }
     }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SweetAlert.Controllers
+namespace SecondHandAuth.Areas.Admin.Controllers
 {
-    public class SweetController : Controller
+    public class ReportController : Controller
     {
-        // GET: Sweet
-        public ActionResult Alert()
+        // GET: Admin/Report
+        public ActionResult Index()
         {
             return View();
         }

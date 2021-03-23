@@ -3,6 +3,7 @@
 @{
     List<Model.Firm> ListFirm = (List<Model.Firm>)ViewData["ListFirm"];
     string title = (string)ViewBag.Title;
+
 }
 
 <!DOCTYPE html>
@@ -26,9 +27,9 @@
             </div>
 
             <div class="col-6">
-                <form id="frmSearch" class="row justify-content-center" method="get" action="./search.aspx">
-                    <input type="text" id="search-key" class="col-7 form-control" name="q" placeholder="Nhập sản Phẩm Cần Tìm">
-                    <button class="btn btn-primary ml-2 col-2"><i class="fas fa-search"></i>Tìm Kiếm</button>
+                <form id="frmSearch" class="row justify-content-center" method="get" action="/Home/Index">
+                    <input type="text" id="search-key" class="col-7 form-control" name="SearchKey" placeholder="Nhập sản Phẩm Cần Tìm">
+                    <button type="submit" class="btn btn-primary ml-2 col-2"><i class="fas fa-search"></i>Tìm Kiếm</button>
                 </form>
             </div>
 
@@ -38,7 +39,8 @@
                     {
                         UserSession UserLogin = (UserSession)Session[Constants.USER_SESION];
                         <div class="bg-info rounded p-2 text-white">
-                            <span>Xin chào: @UserLogin.Username | </span><a class="">Đăng xuất</a>
+                            <a class="text-white" href="/Customer/Index">Xin chào: @UserLogin.Username | </a>
+                            <button class="btn text-white" id="btn-logout">Đăng xuất</button>
                         </div>
                     }
                     else
@@ -64,7 +66,7 @@
                     }
                 </ul>
                 <div id="cart">
-                    <a href="#"><img src="~/Assets/img/cart.png"></a>
+                    <a href="/Cart/Index"><img src="~/Assets/img/cart.png"></a>
                     <span id="cartQTY"></span>
                 </div>
                 <script>
@@ -81,9 +83,8 @@
 
         @RenderBody()
 
-        <div class="footer">
+        <div class="footer rounded w-100">
             <div class="img-footer">
-                <img src="images/footer.PNG">
             </div>
             <div class="contact-us">
                 <div class="contact">
@@ -100,12 +101,17 @@
                 </div>
 
                 <div class="contact">
-                    <p>Hỗ Trợ Thanh Toán</p>
-                    <img id="imgVisa" src="./images/visa.PNG">
                 </div>
             </div>
         </div>
 
     </div>
+    <script type="text/javascript">
+        $("#btn-logout").click(function () {
+            window.localStorage.clear();
+            window.location.href = window.location.origin + "/Admin/Login/Logout";
+            document.cookie = "UserID" + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        })
+    </script>
 </body>
 </html>

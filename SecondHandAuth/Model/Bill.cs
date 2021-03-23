@@ -18,9 +18,9 @@ namespace Model
         [Key]
         public int PK_Bill_ID { get; set; }
 
-        public int FK_AccountID { get; set; }
+        public int? FK_AccountID { get; set; }
 
-        public int FK_CustomerID { get; set; }
+        public int? FK_CustomerID { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
@@ -28,6 +28,12 @@ namespace Model
 
         [StringLength(500)]
         public string Note { get; set; }
+
+        [StringLength(500)]
+        public string ShipAddress { get; set; }
+
+        [StringLength(20)]
+        public string PhoneContact { get; set; }
 
         public decimal? Discount { get; set; }
 

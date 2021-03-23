@@ -1,0 +1,65 @@
+﻿@model List<Model.Bill>
+@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Views/Shared/_Ulayout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Assets/MyCss/buy.css" />
+<style>
+    .content {
+        height: 1000px;
+    }
+</style>
+<div class="content">
+    @foreach (Model.Bill item in Model)
+    {
+        string status = "";
+        if (item.Status == 0)
+        {
+            status = "chờ xác nhận";
+        }
+        else if (item.Status == 1)
+        {
+            status = "đã xác nhận";
+        }
+        else if (item.Status == 3)
+        {
+            status = "Đang giao";
+        }
+        else if (item.Status == 4)
+        {
+            status = "Đã nhận";
+        }
+
+        <div class="row shadow-sm w-75 m-auto p-2 rounded">
+            <div class="col-12">
+                <div class="row mb-2 border-bottom-light">
+                    <div class="col-2">Mã đơn hàng: @item.PK_Bill_ID</div>
+                    <div class="col-2 offset-8">Trạng thái: <strong class="text-danger">@status</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-2 offset-10 text-right">Tổng tiền: <strong class="text-danger">@item.TotalMoney</strong></div>
+                </div>
+                <strong>Chi tiết</strong><br />
+                <div class="row">
+                    @foreach (Model.BillDetail detail in item.BillDetails)
+                {
+                        <div class="col-12 border-bottom-light">
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    @detail.ProductName size: @detail.Custom.Size, color: @detail.Custom.Color x @detail.Quantity
+                                </div>
+                                <div class="col-2 offset-7 text-right">
+                                    @detail.Money
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
