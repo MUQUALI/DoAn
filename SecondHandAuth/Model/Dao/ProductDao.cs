@@ -42,14 +42,41 @@ namespace Model.Dao
             return Bus.ViewProducts(code);
         }
 
-        public List<Product> SearchUnsign(string key)
+        public List<Product> SearchUnsign(string key, int? size, string color)
         {
             try
             {
+                //List<BillDetail> ListDetail = DbContext.BillDetails.Where(x => x.Custom.Size == size).ToList();
+                //List<IGrouping<string, BillDetail>> ListCustom = ListDetail.GroupBy(x => x.ProductID).ToList();
                 string UnSign = CommonDao.convertToUnSign(key);
                 string[] ArrName = UnSign.ToLower().Split(' ');
                 string search = String.Join("-", ArrName);
-                return DbContext.Products.Where(x => x.NameSearch.Contains(search)).ToList();
+                List<Product> ListData = new List<Product>();
+                if(size == null && color == "")
+                {
+                    ListData = DbContext.Products.Where(x => x.NameSearch.Contains(search)).ToList();
+                    return ListData;
+                }
+                else
+                {
+                    List<OrderDetail> ListDetail = DbContext.OrderDetails.Select(x => x).ToList();
+                    if(size != null)
+                    {
+                        size = (int)size;
+                        ListDetail = ListDetail.Where(x => x.Custom.Size == size).ToList();
+                    }
+                    if(color != "")
+                    {
+                        ListDetail = ListDetail.Where(x => x.Custom.Color.Equals(color)).ToList();
+                    }
+                    List<IGrouping<string, OrderDetail>> ListCustom = ListDetail.GroupBy(x => x.ProductID).ToList();
+                    foreach (IGrouping<string, OrderDetail> item in ListCustom)
+                    {
+                        Product ItemCustom = DbContext.Products.Find(item.FirstOrDefault().ProductID);
+                        ListData.Add(ItemCustom);
+                    }
+                    return ListData.Where(x => x.NameSearch.Contains(search)).ToList();
+                }
             }catch(Exception e)
             {
                 return new List<Product>();
@@ -94,6 +121,18 @@ namespace Model.Dao
         public List<OutSubMenu> GetListType(string menu)
         {
             return Bus.GetListType(menu);
+        }
+
+        public List<int> GetListSize()
+        {
+            List<IGrouping<int, Custom>> ListSize = DbContext.Customs.GroupBy(x => x.Size).ToList();
+            return ListSize.Select(x => x.FirstOrDefault().Size).ToList();
+        }
+
+        public List<string> GetListColor()
+        {
+            List<IGrouping<string, Custom>> ListColor = DbContext.Customs.GroupBy(x => x.Color).ToList();
+            return ListColor.Select(x => x.FirstOrDefault().Color).ToList();
         }
     }
 }

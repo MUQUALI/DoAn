@@ -14,7 +14,7 @@ namespace Model
 
         public int FK_AccountID { get; set; }
 
-        public int FK_CustomerID { get; set; }
+        public int? FK_CustomerID { get; set; }
 
         public int FK_PostID { get; set; }
 

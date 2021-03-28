@@ -138,7 +138,9 @@
     <Compile Include="CustomModel\Inventory.cs" />
     <Compile Include="CustomModel\InViewCart.cs" />
     <Compile Include="CustomModel\OutBillDetail.cs" />
+    <Compile Include="CustomModel\OutComment.cs" />
     <Compile Include="CustomModel\OutProduct.cs" />
+    <Compile Include="CustomModel\OutReportIvt.cs" />
     <Compile Include="CustomModel\OutSubMenu.cs" />
     <Compile Include="CustomModel\OutViewOrder.cs" />
     <Compile Include="CustomModel\OutViewOrderDetail.cs" />
@@ -147,10 +149,12 @@
     <Compile Include="Dao\AccountDao.cs" />
     <Compile Include="Dao\BillDao.cs" />
     <Compile Include="Dao\CartDao.cs" />
+    <Compile Include="Dao\CommentDao.cs" />
     <Compile Include="Dao\CommonDao.cs" />
     <Compile Include="Dao\CustomerDao.cs" />
     <Compile Include="Dao\DataProvider.cs" />
     <Compile Include="Dao\OrderDao.cs" />
+    <Compile Include="Dao\PostDao.cs" />
     <Compile Include="Dao\ProductDao.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Firm.cs" />

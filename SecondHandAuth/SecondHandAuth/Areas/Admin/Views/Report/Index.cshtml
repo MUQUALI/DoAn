@@ -6,51 +6,60 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
 <script type="text/javascript" src="~/Assets/MyScript/ReportEvent.js"></script>
+<div class="row shadow mb-4 p-3">
+    <div class="col-3">
+        <label for="sl_month">tháng</label>
+        <select id="sl_month" class="form-control">
+            <option></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+    </div>
+
+    <div class="col-3">
+        <label for="sl_year">năm</label>
+        <select id="sl_year" class="form-control">
+            <option></option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+        </select>
+    </div>
+    <div class="col-2">
+        <button id="btn_filter" class="btn btn-primary">Lọc</button>
+    </div>
+</div>
 <div class="row">
     <div class="col-10 offset-1">
         <canvas id="saleChart"></canvas>
     </div>
 </div>
 
+<div class="row mt-2">
+    <div class="col-10 offset-1">
+        <canvas id="saleChart2"></canvas>
+    </div>
+</div>
+
 <script>
-    /*var ctx = document.getElementById('saleChart');
-    var revenueOfYearData = getRevenueOfYear(2021);
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            datasets: [
-                {
-                    label: 'Doanh thu trong năm',
-                    data: revenueOfYearData,
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    lineTension: 0,
-                    order: 1
-                },
-                {
-                    label: 'Chi phí trong năm',
-                    data: [700, 200, 0, 0, 0, 450, 1500],
-                    fill: false,
-                    borderColor: 'red',
-                    lineTension: 0,
-                    order: 2
-                }
-            ]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            },
-            title: {
-                display: true,
-                text: 'Doanh thu'
-            }
-        }
-    });*/
+    
 </script>
 

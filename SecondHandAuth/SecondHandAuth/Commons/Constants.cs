@@ -25,6 +25,8 @@ namespace SecondHandAuth.Commons
         // product page size
         public static int PRODUCT_PAGE_SIZE = 5;
 
+        public static int REPORT_PAGE_SIZE = 20;
+
         public static int STATUS_0 = 0;
 
         public static int STATUS_1 = 1;

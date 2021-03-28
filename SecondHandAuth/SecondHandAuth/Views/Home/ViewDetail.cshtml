@@ -7,6 +7,7 @@
     Model.Product Detail = (Model.Product)ViewData["Detail"];
 
     string[] images = Detail.Images.Split(';');
+    UserSession UserInf = (UserSession)Session["USER_SESION"];
 }
 <link rel="stylesheet" type="text/css" href="~/Assets/MyCss/buy.css" />
 
@@ -46,8 +47,17 @@
                     <div id="transport">
                         <span>Vận Chuyển: &nbsp <i class="fas fa-shuttle-van"></i> &nbsp 30.000 vnđ - Hà nội</span>
                         <br>
-                        <label for="txt_address">Địa chỉ giao hàng</label>
-                        <textarea class="form-control" id="txt_address" name="Address" rows="5"></textarea>
+                        <label for="txt_address">Mô tả</label>
+                        <textarea class="form-control" id="txt_address" readonly name="Address" rows="5">
+                            @if (Detail.Posts.Count > 0)
+                            {
+                                @Detail.Posts.FirstOrDefault().Contents.ToString()
+                            }
+                            else
+                            {
+                                @Detail.Firm.FirmName.ToString()
+                            }
+                        </textarea>
                     </div>
                     <div class="product-custom row">
                         <div class="col-12">
@@ -81,9 +91,44 @@
                 </form>
             </div>
         </div>
+
+        
     </div>
 
+    @if (ViewBag.OnComment != null && (bool)ViewBag.OnComment)
+    {
+        <div class="row-content p-3 mt-2 m-auto rounded border border-info">
+            <input id="post_id" type="hidden" value="@Detail.Posts.FirstOrDefault().PK_PostID" />
+            <input id="content_mes" class="col-9 mr-2 form-control" placeholder="Bình luận" />
+            <button id="btn_send" class="btn btn-primary col-2">Gửi</button>
+        </div>
+    }
+
+    <div id="list_mes" class="row-content row p-3 m-auto rounded border border-info">
+        @if(ViewBag.ListComment != null)
+        {
+            foreach (Model.Comment item in (List<Model.Comment>)ViewBag.ListComment)
+            {
+                <div class="col-10 offset-1 mt-1 p-2 border border-primary rounded">
+                    @item.CreatedDate.ToString("dd/MM/yyyy hh:mm:ss tt") <br />
+                    @(item.Author + ": " + item.Contents)
+                </div>
+                if(UserInf != null && item.FK_AccountID == UserInf.PK_AccountID)
+                {
+                    <div class="col-1 mt-1">
+                        <i data-id="@item.PK_CommentID" class="fa fa-trash remove_mes"></i>
+                    </div>
+                }
+            }
+        }
+    </div>
 </div>
+
+
+
+
+
+
 <script type="text/javascript">
 		function chainImg(img) {
 			let mainSrc = img.getAttribute("src");
@@ -109,4 +154,5 @@
 
 <script type="text/javascript" src="~/Assets/MyScript/MyAjax.js"></script>
 <script type="text/javascript" src="~/Assets/MyScript/AddToCart.js"></script>
+<script type="text/javascript" src="~/Assets/MyScript/CommentEvent.js"></script>
 

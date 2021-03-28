@@ -22,7 +22,11 @@ namespace SecondHandAuth.Controllers
                 return RedirectToAction("Index", "Login", new { area = "Admin" });
             }
             List<Firm> ListFirm = prDao.GetListFirm();
+            List<int> ListSize = prDao.GetListSize();
+            List<string> ListColor = prDao.GetListColor();
             ViewData["ListFirm"] = ListFirm;
+            ViewData["ListSize"] = ListSize;
+            ViewData["ListColor"] = ListColor;
             return View();
         }
 

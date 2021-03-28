@@ -1,0 +1,83 @@
+﻿@using PagedList.Mvc
+@{
+    ViewBag.Title = "Báo cáo tồn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int no = 0;
+}
+@model  PagedList.IPagedList<Model.CustomModel.OutReportIvt> 
+
+<h1 class="h3 mb-2 text-gray-800">Báo cáo tồn hàng</h1>
+<div class="row mb-2">
+    <div class="col-md-5 offset-md-3">
+        <form class="row" action="" method="get">
+            <input type="text" name="code" value="@ViewBag.Code" class="form-control col-9" id="search_area" placeholder="Mã sản phẩm" />
+            <button type="submit" id="btn_search" class="btn btn-primary col-3 form-control">Tìm kiếm</button>
+        </form>
+    </div>
+    <div class="col-md-2 offset-md-2 text-right">
+        <a class="btn btn-primary" href="~/Admin/Product/Create" role="button">Thêm mới</a>
+    </div>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Dữ liệu sản phẩm</h6>
+        @if (ViewBag.Mes != null)
+            {
+            <div id="err_dup" class="alert alert-success" role="alert">
+                @ViewBag.Mes
+            </div>
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng nhập</th>
+                        <th>Số lượng bán</th>
+                        <th>Tồn</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="area_render">
+                    @foreach (Model.CustomModel.OutReportIvt Item in Model)
+                    {
+                        no++;
+                        <tr>
+                            <td>@no</td>
+                            <td>@Item.ProductCode</td>
+                            <td>@Item.ProductName</td>
+                            <td>@Item.BuyQty</td>
+                            <td>@Item.SaleQty</td>
+                            <td>@Item.Inventory</td>
+                            <td>
+                                <a class="mr-2" href="/Admin/Product/Detail/@Item.ProductCode">
+                                    <i class="fa fa-eye" title="chi tiết tồn"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-3 offset-9">
+        <div class="pagination justify-content-end">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, ViewBag.Code }),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item", "page-link" }
+            })
+        </div>
+    </div>
+</div>
+
+

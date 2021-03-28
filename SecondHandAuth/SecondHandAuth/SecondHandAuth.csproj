@@ -217,6 +217,7 @@
     <Compile Include="Areas\Admin\ApiControllers\AccountController.cs" />
     <Compile Include="Areas\Admin\ApiControllers\BillController.cs" />
     <Compile Include="Areas\Admin\ApiControllers\CartController.cs" />
+    <Compile Include="Areas\Admin\ApiControllers\CommentController.cs" />
     <Compile Include="Areas\Admin\ApiControllers\OrderController.cs" />
     <Compile Include="Areas\Admin\ApiControllers\ProductController.cs" />
     <Compile Include="Areas\Admin\ApiControllers\ReportController.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PostController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Models\AccountModel.cs" />
@@ -271,6 +273,7 @@
     <Content Include="Assets\MyScript\AddToCart.js" />
     <Content Include="Assets\MyScript\BillEvent.js" />
     <Content Include="Assets\MyScript\CartIndex.js" />
+    <Content Include="Assets\MyScript\CommentEvent.js" />
     <Content Include="Assets\MyScript\CustomValidateBox.js" />
     <Content Include="Assets\MyScript\Home.js" />
     <Content Include="Assets\MyScript\MyAjax.js" />
@@ -2172,6 +2175,8 @@
     <Content Include="Areas\Admin\Views\Bill\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Bill\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\GetReportInventory.cshtml" />
+    <Content Include="Areas\Admin\Views\Post\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fontawesome\all.js" />
     <Content Include="Scripts\fontawesome\all.min.js" />

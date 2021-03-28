@@ -21,7 +21,11 @@ namespace SecondHandAuth.Controllers
             List<Bill> Model = Dao.GetMyBills(UserInfo.PK_AccountID).OrderByDescending(x => x.CreatedDate).ToList();
 
             List<Firm> ListFirm = prDao.GetListFirm();
+            List<int> ListSize = prDao.GetListSize();
+            List<string> ListColor = prDao.GetListColor();
             ViewData["ListFirm"] = ListFirm;
+            ViewData["ListSize"] = ListSize;
+            ViewData["ListColor"] = ListColor;
             return View(Model);
         }
     }

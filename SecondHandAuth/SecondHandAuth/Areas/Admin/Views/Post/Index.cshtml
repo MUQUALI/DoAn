@@ -1,0 +1,82 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<Model.Post>  
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Quản lý bài đăng</h1>
+<div class="row mb-2">
+    <div class="col-md-5 offset-md-3">
+        <form class="row" action="" method="get">
+            <input type="text" name="code" class="form-control col-9" id="search_area" placeholder="Mã sản phẩm" />
+            <button type="submit" id="btn_search" class="btn btn-primary col-3 form-control">Tìm kiếm</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Dữ liệu sản phẩm</h6>
+        @if (ViewBag.Mes != null)
+            {
+            <div id="err_dup" class="alert alert-success" role="alert">
+                @ViewBag.Mes
+            </div>
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã bài đăng</th>
+                        <th>User tạo</th>
+                        <th>Người tạo</th>
+                        <th>Mã sản phẩm</th>
+                        <th width="200">Nội dung</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody id="area_render">
+                    @foreach (Model.Post Item in Model)
+                    {
+                        <tr>
+                            <td>@Item.PK_PostID</td>
+                            <td>@Item.Account.Username</td>
+                            <td>@(Item.Account.Employee != null ? Item.Account.Employee.Name : Item.Account.Customer.Name)</td>
+                            <td>@Item.FK_ProductID</td>
+                            <td>@Item.Contents</td>
+                            <td>@Item.CreatedDate</td>
+                            <td>
+                                <a class="mr-2">
+                                    <i class="fa fa-edit" title="cập nhật"></i>
+                                </a>
+                                <a class="ic_del" href="javascript:void(0)">
+                                    <i id="ic_del_fa" class="fa fa-trash" data-id="@Item.PK_PostID" title="xóa"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Assets/MyScript/ProductEvent.js"></script>
+
+<div class="row">
+    <div class="col-3 offset-9">
+        <div class="pagination justify-content-end">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, ViewBag.Code }),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item", "page-link" }
+            })
+        </div>
+    </div>
+</div>
+
+

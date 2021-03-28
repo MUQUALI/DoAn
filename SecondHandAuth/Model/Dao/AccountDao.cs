@@ -9,9 +9,11 @@ namespace Model.Dao
     public class AccountDao
     {
         AccountBus Bus = null;
+        SecondHandDbContext DbContext = null;
         public AccountDao()
         {
             Bus = new AccountBus();
+            DbContext = DataProvider.GetInstance();
         }
         public int GetTotalRecord(string key)
         {
@@ -50,6 +52,21 @@ namespace Model.Dao
         public string Delete(int Id)
         {
             return Bus.Delete(Id);
+        }
+
+        public int OnComment(string ProductID, int UserID)
+        {
+            int OnComment = 0;
+            Account AccInfo = DbContext.Accounts.Find(UserID);
+            List<Bill> YourBill = DbContext.Bills.Where(x => (x.FK_AccountID == UserID || x.FK_CustomerID == AccInfo.FK_CustomerID)).ToList();
+            foreach (Bill item in YourBill)
+            {
+                if(item.BillDetails.Where(x => x.ProductID.Equals(ProductID)).Count() > 0)
+                {
+                    OnComment++;
+                }
+            }
+            return OnComment;
         }
     }
 }

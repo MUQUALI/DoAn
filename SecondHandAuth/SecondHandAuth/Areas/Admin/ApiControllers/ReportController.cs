@@ -30,5 +30,17 @@ namespace SecondHandAuth.Areas.Admin.ApiControllers
         {
             return Json(RpBus.GetProfitPerYear(year));
         }
+
+        [HttpGet]
+        public JsonResult<string[]> getListLableOfProduct(int? month, int? year)
+        {
+            return Json(RpBus.getListLableOfProduct(month, year));
+        }
+
+        [HttpGet]
+        public JsonResult<int[]> GetQtySaleProduct(int? month, int? year)
+        {
+            return Json(RpBus.GetQtySaleProduct(month, year));
+        }
     }
 }
